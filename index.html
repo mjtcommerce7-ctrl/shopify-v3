@@ -153,9 +153,29 @@ input[type="file"] { display: none; }
 
 <div class="card">
   <div class="card-label">Productinfo</div>
-  <div class="field" style="margin-bottom:14px">
-    <label>Titel <span class="req">*</span></label>
-    <input type="text" id="title" placeholder="bijv. Prada L'Homme Eau de Toilette">
+  <div class="grid2" style="margin-bottom:14px">
+    <div class="field">
+      <label>Titel <span class="req">*</span></label>
+      <input type="text" id="title" placeholder="bijv. Prada L'Homme Eau de Toilette">
+    </div>
+    <div class="field">
+      <label>Vendor (merk)</label>
+      <input type="text" id="vendor" placeholder="bijv. Prada" list="vendor-list">
+      <datalist id="vendor-list">
+        <option>Lataffa</option><option>Prada</option><option>Montale</option><option>Armani</option>
+        <option>Hugo Boss</option><option>Viktor &amp; Rolf</option><option>Xerjoff</option>
+        <option>Tom Ford</option><option>Gisada</option><option>Guerlain</option>
+        <option>INITIO</option><option>KAYALI</option><option>Maison Francis Kurkdijian</option>
+        <option>Marc Jacobs</option><option>Moschino</option><option>Nishane</option>
+        <option>Parfums de Marly</option><option>Zadig &amp; Voltaire</option><option>Bvlgari</option>
+        <option>Carolina Herrera</option><option>Dolce &amp; Gabbana</option><option>Hermes</option>
+        <option>Creed</option><option>Chloe</option><option>Azzaro</option>
+        <option>Yves Saint Laurent</option><option>Versace</option><option>Jean Paul Gaultier</option>
+        <option>Gucci</option><option>Lancome</option><option>Mugler</option>
+        <option>Rabanne</option><option>Narciso Rodriguez</option><option>Burberry</option>
+        <option>Valentino</option><option>Kenzo</option><option>Givenchy</option>
+      </datalist>
+    </div>
   </div>
   <div class="field">
     <div class="row-between">
@@ -620,6 +640,7 @@ async function submitProduct() {
       body: JSON.stringify({
         product: {
           title: document.getElementById('title').value.trim(),
+          vendor: document.getElementById('vendor').value.trim() || undefined,
           body_html: desc,
           tags: selectedTags.join(', '),
           options: [{ name: optionName }],
