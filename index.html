@@ -108,6 +108,11 @@ input[type="file"] { display: none; }
   .grid2, .grid3 { grid-template-columns: 1fr; }
   .v-grid { grid-template-columns: 1fr 1fr; }
 }
+  #description:empty:before { content: attr(data-placeholder); color: var(--text-hint); pointer-events: none; }
+#description h2 { font-size: 16px; font-weight: 500; margin: 8px 0 4px; }
+#description h3 { font-size: 14px; font-weight: 500; margin: 8px 0 4px; }
+#description p { margin: 4px 0; }
+#description ul, #description ol { padding-left: 20px; margin: 4px 0; }
 </style>
 </head>
 <body>
@@ -144,12 +149,26 @@ input[type="file"] { display: none; }
     <label>Titel</label>
     <input type="text" id="title" placeholder="bijv. Prada L'Homme Eau de Toilette">
   </div>
-  <div class="field">
+ <div class="field">
     <div class="row-between">
       <label>Beschrijving</label>
       <button class="btn" id="rewrite-btn" onclick="rewriteDescription()"><i class="ti ti-wand"></i> Herschrijf professioneel</button>
     </div>
-    <textarea id="description" placeholder="Plak hier de originele beschrijving..."></textarea>
+    <div style="border:1px solid var(--border-med);border-radius:var(--radius);overflow:hidden">
+      <div style="display:flex;gap:4px;padding:6px 8px;background:var(--surface2);border-bottom:1px solid var(--border);flex-wrap:wrap">
+        <button type="button" class="btn" style="padding:4px 8px;font-size:12px;min-width:32px" onclick="fmt('bold')"><i class="ti ti-bold"></i></button>
+        <button type="button" class="btn" style="padding:4px 8px;font-size:12px;min-width:32px" onclick="fmt('italic')"><i class="ti ti-italic"></i></button>
+        <button type="button" class="btn" style="padding:4px 8px;font-size:12px;min-width:32px" onclick="fmt('underline')"><i class="ti ti-underline"></i></button>
+        <div style="width:1px;background:var(--border-med);margin:2px 4px"></div>
+        <button type="button" class="btn" style="padding:4px 8px;font-size:12px" onclick="fmt('formatBlock','h2')">H2</button>
+        <button type="button" class="btn" style="padding:4px 8px;font-size:12px" onclick="fmt('formatBlock','h3')">H3</button>
+        <button type="button" class="btn" style="padding:4px 8px;font-size:12px" onclick="fmt('formatBlock','p')">P</button>
+        <div style="width:1px;background:var(--border-med);margin:2px 4px"></div>
+        <button type="button" class="btn" style="padding:4px 8px;font-size:12px" onclick="fmt('insertUnorderedList')"><i class="ti ti-list"></i></button>
+        <button type="button" class="btn" style="padding:4px 8px;font-size:12px" onclick="fmt('insertOrderedList')"><i class="ti ti-list-numbers"></i></button>
+      </div>
+      <div id="description" contenteditable="true" style="min-height:120px;padding:10px 12px;font-size:14px;outline:none;line-height:1.6" data-placeholder="Plak hier de originele beschrijving..."></div>
+    </div>
   </div>
 
   <div class="section-divider">
@@ -279,6 +298,11 @@ input[type="file"] { display: none; }
   }
 })();
 
+  function fmt(cmd, val) {
+  document.execCommand(cmd, false, val || null);
+  document.getElementById('description').focus();
+}
+
 const TAGS = ['Lataffa','Prada','Montale','Armani','Hugo Boss','Viktor & Rolf','Xerjoff','Tom Ford','Gisada','Guerlain','INITIO','KAYALI','Maison Francis Kurkdijian','Marc Jacobs','Moschino','Nishane','Parfums de Marly','Zadig & Voltaire','Bvlgari','Carolina Herrera','Dolce & Gabbana','Hermes','Creed','Chloe','Azzaro','Yves Saint Laurent','Versace','Jean Paul Gaultier','Gucci','Lancome','Mugler','Rabanne','Narciso Rodriguez','Burberry','Valentino','Kenzo','Givenchy','Dames','Heren'];
 
 let selectedTags = [], photos = [], allLogos = [], variantCount = 1;
@@ -339,7 +363,7 @@ function randomReviews() {
 }
 
 async function rewriteDescription() {
-  const desc = document.getElementById('description').value.trim();
+ const desc = document.getElementById('description').innerText.trim();
   const title = document.getElementById('title').value.trim();
   if (!desc) { showStatus('Vul eerst een beschrijving in', 'error'); return; }
   const btn = document.getElementById('rewrite-btn');
@@ -353,7 +377,7 @@ async function rewriteDescription() {
       body: JSON.stringify({ description: desc, title })
     });
     const data = await res.json();
-    if (data.result) { document.getElementById('description').value = data.result; showStatus('Beschrijving herschreven', 'success'); }
+    if (data.result) { document.getElementById('description').innerHTML = data.result.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>'); showStatus('Beschrijving herschreven', 'success'); }
     else showStatus('Fout: ' + (data.error || 'onbekend'), 'error');
   } catch(e) { showStatus('Fout: ' + e.message, 'error'); }
   btn.disabled = false;
@@ -454,7 +478,7 @@ async function submitProduct() {
   const mfr = document.getElementById('manufacturer').value.trim();
   if (mfr) metafields.push({ namespace: 'custom', key: 'fabrikant', value: toRichText(mfr), type: 'rich_text_field' });
 
-  const desc = document.getElementById('description').value.trim();
+  const desc = document.getElementById('description').innerHTML.trim();
 
   try {
     const res = await fetch('/.netlify/functions/product', {
