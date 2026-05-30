@@ -221,13 +221,20 @@ input[type="file"] { display: none; }
 
 <div class="card">
   <div class="card-label">Varianten</div>
-  <div class="variant-header">
-    <span>Naam</span>
-    <span>Prijs (€)</span>
-    <span>Vergelijkingsprijs (€)</span>
-    <span style="text-align:center">Track qty</span>
-    <span></span>
+ <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+  <div class="field" style="max-width:240px">
+    <label>Optienaam</label>
+    <input type="text" id="option-name" placeholder="bijv. Formaat">
   </div>
+  <button type="button" class="btn" style="margin-top:20px" onclick="document.getElementById('option-name').value='Formaat'">Formaat</button>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr auto auto;gap:8px;margin-bottom:6px">
+  <span style="font-size:11px;color:var(--text-hint)">Waarde</span>
+  <span style="font-size:11px;color:var(--text-hint)">Prijs (€)</span>
+  <span style="font-size:11px;color:var(--text-hint)">Vergelijkingsprijs (€)</span>
+  <span style="font-size:11px;color:var(--text-hint);text-align:center">Track qty</span>
+  <span></span>
+</div>
   <div id="variants-container">
     <div class="variant-row" data-idx="0">
       <input type="text" placeholder="bijv. 50ml" class="v-name">
