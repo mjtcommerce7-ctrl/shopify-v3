@@ -394,7 +394,8 @@ function filterLogos(q) {
 async function submitProduct() {
   if (!getToken()) { showStatus('Vul eerst je API token in', 'error'); return; }
   const title = document.getElementById('title').value.trim();
-  if (!title) { showStatus('Vul een titel in', 'error'); return; }
+  const emptyVariant = Array.from(document.querySelectorAll('.v-name')).find(i => !i.value.trim());
+if (emptyVariant) { showStatus('Vul een naam in voor elke variant', 'error'); emptyVariant.focus(); return; }
 
   const btn = document.getElementById('submit-btn');
   btn.disabled = true;
