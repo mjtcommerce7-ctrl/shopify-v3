@@ -647,7 +647,7 @@ async function submitProduct() {
   const mfrHtml = document.getElementById('manufacturer').innerHTML.trim();
   if (mfrHtml) metafields.push({ namespace: 'custom', key: 'fabrikant', value: htmlToRichText(mfrHtml), type: 'rich_text_field' });
 
-  const desc = document.getElementById('description').innerHTML.trim();
+const desc = document.getElementById('description').innerHTML.trim().replace(/<p><br><\/p>/g, '').replace(/<p>\s*<\/p>/g, '');
 
   try {
     const res = await fetch('/.netlify/functions/product', {
