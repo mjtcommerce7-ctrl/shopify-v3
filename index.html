@@ -9,156 +9,156 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=DM+Mono&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --bg: #f7f6f3; --surface: #ffffff; --surface2: #f2f1ee;
-    --border: rgba(0,0,0,0.1); --border-med: rgba(0,0,0,0.18);
-    --text: #1a1a18; --text-sec: #6b6b67; --text-hint: #9e9e9a;
-    --accent: #1a1a18;
-    --success: #2a7a4b; --success-bg: #eaf5ee;
-    --danger: #c0392b; --danger-bg: #fdf0ee;
-    --info: #1a5fa8; --info-bg: #eaf1fb;
-    --radius: 10px; --radius-lg: 14px;
-    --font: 'DM Sans', sans-serif; --font-mono: 'DM Mono', monospace;
-    --shadow: 0 1px 3px rgba(0,0,0,0.07), 0 4px 12px rgba(0,0,0,0.04);
-  }
-  body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; padding: 2rem 1rem; font-size: 15px; line-height: 1.6; }
-  .page-wrap { max-width: 720px; margin: 0 auto; }
-  .page-header { display: flex; align-items: center; gap: 14px; margin-bottom: 2rem; }
-  .logo-mark { width: 44px; height: 44px; background: var(--accent); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .logo-mark i { font-size: 22px; color: #fff; }
-  .page-header h1 { font-size: 20px; font-weight: 500; }
-  .page-header p { font-size: 13px; color: var(--text-sec); margin-top: 1px; }
-  .card { background: var(--surface); border-radius: var(--radius-lg); border: 1px solid var(--border); padding: 1.5rem; margin-bottom: 1rem; box-shadow: var(--shadow); }
-  .card-label { font-size: 11px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-hint); margin-bottom: 1rem; }
-  .field { display: flex; flex-direction: column; gap: 5px; }
-  .field label { font-size: 13px; color: var(--text-sec); }
-  input[type="text"], input[type="number"], input[type="password"], select, textarea {
-    width: 100%; font-family: var(--font); font-size: 14px; padding: 9px 12px;
-    border: 1px solid var(--border-med); border-radius: var(--radius);
-    background: var(--surface); color: var(--text); outline: none;
-    transition: border-color 0.15s, box-shadow 0.15s; appearance: none;
-  }
-  input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(26,26,24,0.08); }
-  textarea { resize: vertical; min-height: 90px; }
-  select {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b6b67' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat: no-repeat; background-position: right 10px center; padding-right: 32px;
-  }
-  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
-  .btn { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font); font-size: 13px; font-weight: 500; padding: 8px 14px; border-radius: var(--radius); cursor: pointer; transition: all 0.13s; border: 1px solid var(--border-med); background: var(--surface); color: var(--text-sec); white-space: nowrap; }
-  .btn:hover { background: var(--surface2); color: var(--text); }
-  .btn:active { transform: scale(0.98); }
-  .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-  .btn i { font-size: 14px; }
-  .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); font-size: 15px; padding: 11px 24px; width: 100%; justify-content: center; }
-  .btn-primary:hover { background: #333; border-color: #333; color: #fff; }
-  .btn-primary:disabled { background: var(--text-hint); border-color: var(--text-hint); }
-  .btn-ghost { border: 1px dashed var(--border-med); background: transparent; width: 100%; justify-content: center; color: var(--text-hint); margin-top: 6px; }
-  .btn-ghost:hover { background: var(--surface2); color: var(--text-sec); }
-  .btn-icon { width: 36px; height: 36px; padding: 0; justify-content: center; flex-shrink: 0; }
-  .btn-icon:hover { background: var(--danger-bg); border-color: #e0a09a; color: var(--danger); }
-  .photo-zone { border: 1.5px dashed var(--border-med); border-radius: var(--radius-lg); padding: 2rem; text-align: center; cursor: pointer; transition: all 0.15s; background: var(--bg); }
-  .photo-zone:hover { background: var(--surface2); border-color: var(--text-hint); }
-  .photo-zone i { font-size: 32px; color: var(--text-hint); display: block; margin-bottom: 8px; }
-  .photo-zone span { font-size: 13px; color: var(--text-sec); }
-  input[type="file"] { display: none; }
-  .photo-preview { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-  .photo-thumb { position: relative; width: 76px; height: 76px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); }
-  .photo-thumb img { width: 100%; height: 100%; object-fit: cover; }
-  .photo-thumb button { position: absolute; top: 3px; right: 3px; width: 20px; height: 20px; background: rgba(0,0,0,0.6); border: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; font-size: 11px; padding: 0; }
-  .variant-row { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 10px; align-items: end; margin-bottom: 8px; }
-  .tag-grid { display: flex; flex-wrap: wrap; gap: 6px; }
-  .tag { padding: 5px 13px; border-radius: 99px; border: 1px solid var(--border-med); font-size: 12px; color: var(--text-sec); cursor: pointer; transition: all 0.12s; user-select: none; background: var(--surface); }
-  .tag:hover { border-color: var(--text-hint); color: var(--text); }
-  .tag.selected { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 500; }
-  .toggle-wrap { display: flex; align-items: center; gap: 10px; padding: 12px 0; }
-  .toggle { position: relative; width: 40px; height: 22px; flex-shrink: 0; }
-  .toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
-  .toggle-slider { position: absolute; inset: 0; background: var(--border-med); border-radius: 99px; cursor: pointer; transition: background 0.2s; }
-  .toggle-slider::before { content: ''; position: absolute; width: 16px; height: 16px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
-  .toggle input:checked + .toggle-slider { background: var(--accent); }
-  .toggle input:checked + .toggle-slider::before { transform: translateX(18px); }
-  .logo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; max-height: 200px; overflow-y: auto; margin-top: 8px; padding: 2px; }
-  .logo-item { border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 8px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; transition: all 0.13s; background: var(--surface); }
-  .logo-item:hover { border-color: var(--border-med); background: var(--surface2); }
-  .logo-item.selected { border: 2px solid var(--accent); background: var(--surface2); }
-  .logo-item img { width: 52px; height: 52px; object-fit: contain; }
-  .logo-item i { font-size: 28px; color: var(--text-hint); }
-  .logo-item span { font-size: 10px; color: var(--text-sec); text-align: center; word-break: break-all; line-height: 1.3; }
-  .logo-item.selected span { color: var(--text); font-weight: 500; }
-  .row-between { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 5px; }
-  .row-between label { font-size: 13px; color: var(--text-sec); }
-  .inline-row { display: flex; align-items: center; gap: 8px; }
-  .inline-row input { flex: 1; }
-  .status-bar { font-size: 13px; margin-top: 10px; padding: 10px 14px; border-radius: var(--radius); display: none; }
-  .status-bar.success { display: block; background: var(--success-bg); color: var(--success); }
-  .status-bar.error { display: block; background: var(--danger-bg); color: var(--danger); }
-  .status-bar.info { display: block; background: var(--info-bg); color: var(--info); }
-  .config-card { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1rem 1.5rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 12px; }
-  .config-card label { font-size: 12px; color: var(--text-sec); white-space: nowrap; font-weight: 500; }
-  .config-card input { flex: 1; font-family: var(--font-mono); font-size: 12px; background: var(--surface); }
-  .qty-fields { margin-top: 12px; display: none; }
-  .qty-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
-  .qty-row label { font-size: 13px; color: var(--text-sec); min-width: 120px; }
-  .qty-row input { max-width: 100px; }
-  .rewriting { opacity: 0.5; }
-  .note { font-size: 12px; color: var(--text-hint); margin-bottom: 1.5rem; padding: 0 4px; }
-  @media (max-width: 560px) {
-    .grid2, .grid3 { grid-template-columns: 1fr; }
-    .variant-row { grid-template-columns: 1fr 1fr; }
-  }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #f7f6f3; --surface: #ffffff; --surface2: #f2f1ee;
+  --border: rgba(0,0,0,0.1); --border-med: rgba(0,0,0,0.18);
+  --text: #1a1a18; --text-sec: #6b6b67; --text-hint: #9e9e9a;
+  --accent: #1a1a18;
+  --success: #2a7a4b; --success-bg: #eaf5ee;
+  --danger: #c0392b; --danger-bg: #fdf0ee;
+  --info: #1a5fa8; --info-bg: #eaf1fb;
+  --radius: 10px; --radius-lg: 14px;
+  --font: 'DM Sans', sans-serif; --font-mono: 'DM Mono', monospace;
+  --shadow: 0 1px 3px rgba(0,0,0,0.07), 0 4px 12px rgba(0,0,0,0.04);
+}
+body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; padding: 2rem 1rem; font-size: 15px; line-height: 1.6; }
+.page-wrap { max-width: 720px; margin: 0 auto; }
+.page-header { display: flex; align-items: center; gap: 14px; margin-bottom: 2rem; }
+.logo-mark { width: 44px; height: 44px; background: var(--accent); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.logo-mark i { font-size: 22px; color: #fff; }
+.page-header h1 { font-size: 20px; font-weight: 500; }
+.page-header p { font-size: 13px; color: var(--text-sec); margin-top: 1px; }
+.card { background: var(--surface); border-radius: var(--radius-lg); border: 1px solid var(--border); padding: 1.5rem; margin-bottom: 1rem; box-shadow: var(--shadow); }
+.card-label { font-size: 11px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-hint); margin-bottom: 1rem; }
+.section-divider { border-top: 1px solid var(--border); margin: 1.25rem 0; padding-top: 1.25rem; }
+.field { display: flex; flex-direction: column; gap: 5px; }
+.field label { font-size: 13px; color: var(--text-sec); }
+input[type="text"], input[type="number"], input[type="password"], select, textarea {
+  width: 100%; font-family: var(--font); font-size: 14px; padding: 9px 12px;
+  border: 1px solid var(--border-med); border-radius: var(--radius);
+  background: var(--surface); color: var(--text); outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s; appearance: none;
+}
+input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(26,26,24,0.08); }
+textarea { resize: vertical; min-height: 90px; }
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b6b67' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 10px center; padding-right: 32px;
+}
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.btn { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font); font-size: 13px; font-weight: 500; padding: 8px 14px; border-radius: var(--radius); cursor: pointer; transition: all 0.13s; border: 1px solid var(--border-med); background: var(--surface); color: var(--text-sec); white-space: nowrap; }
+.btn:hover { background: var(--surface2); color: var(--text); }
+.btn:active { transform: scale(0.98); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+.btn i { font-size: 14px; }
+.btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); font-size: 15px; padding: 11px 24px; width: 100%; justify-content: center; }
+.btn-primary:hover { background: #333; border-color: #333; color: #fff; }
+.btn-primary:disabled { background: var(--text-hint); border-color: var(--text-hint); }
+.btn-ghost { border: 1px dashed var(--border-med); background: transparent; width: 100%; justify-content: center; color: var(--text-hint); margin-top: 6px; }
+.btn-ghost:hover { background: var(--surface2); color: var(--text-sec); }
+.btn-icon { width: 36px; height: 36px; padding: 0; justify-content: center; flex-shrink: 0; }
+.btn-icon:hover { background: var(--danger-bg); border-color: #e0a09a; color: var(--danger); }
+.photo-zone { border: 1.5px dashed var(--border-med); border-radius: var(--radius-lg); padding: 2rem; text-align: center; cursor: pointer; transition: all 0.15s; background: var(--bg); }
+.photo-zone:hover { background: var(--surface2); border-color: var(--text-hint); }
+.photo-zone i { font-size: 32px; color: var(--text-hint); display: block; margin-bottom: 8px; }
+.photo-zone span { font-size: 13px; color: var(--text-sec); }
+input[type="file"] { display: none; }
+.photo-preview { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.photo-thumb { position: relative; width: 76px; height: 76px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); }
+.photo-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.photo-thumb button { position: absolute; top: 3px; right: 3px; width: 20px; height: 20px; background: rgba(0,0,0,0.6); border: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; font-size: 11px; padding: 0; }
+.variant-row { display: grid; grid-template-columns: 1fr 1fr 1fr auto auto; gap: 8px; align-items: center; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 0.5px solid var(--border); }
+.variant-row:last-child { border-bottom: none; }
+.variant-header { display: grid; grid-template-columns: 1fr 1fr 1fr auto auto; gap: 8px; margin-bottom: 6px; }
+.variant-header span { font-size: 11px; color: var(--text-hint); }
+.tag-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { padding: 5px 13px; border-radius: 99px; border: 1px solid var(--border-med); font-size: 12px; color: var(--text-sec); cursor: pointer; transition: all 0.12s; user-select: none; background: var(--surface); }
+.tag:hover { border-color: var(--text-hint); color: var(--text); }
+.tag.selected { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 500; }
+.toggle { position: relative; width: 36px; height: 20px; flex-shrink: 0; }
+.toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+.toggle-slider { position: absolute; inset: 0; background: var(--border-med); border-radius: 99px; cursor: pointer; transition: background 0.2s; }
+.toggle-slider::before { content: ''; position: absolute; width: 14px; height: 14px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+.toggle input:checked + .toggle-slider { background: var(--accent); }
+.toggle input:checked + .toggle-slider::before { transform: translateX(16px); }
+.logo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; max-height: 200px; overflow-y: auto; margin-top: 8px; padding: 2px; }
+.logo-item { border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 8px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; transition: all 0.13s; background: var(--surface); }
+.logo-item:hover { border-color: var(--border-med); background: var(--surface2); }
+.logo-item.selected { border: 2px solid var(--accent); background: var(--surface2); }
+.logo-item img { width: 52px; height: 52px; object-fit: contain; }
+.logo-item i { font-size: 28px; color: var(--text-hint); }
+.logo-item span { font-size: 10px; color: var(--text-sec); text-align: center; word-break: break-all; line-height: 1.3; }
+.logo-item.selected span { color: var(--text); font-weight: 500; }
+.row-between { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 5px; }
+.row-between label { font-size: 13px; color: var(--text-sec); }
+.inline-row { display: flex; align-items: center; gap: 8px; }
+.inline-row input { flex: 1; }
+.status-bar { font-size: 13px; margin-top: 10px; padding: 10px 14px; border-radius: var(--radius); display: none; }
+.status-bar.success { display: block; background: var(--success-bg); color: var(--success); }
+.status-bar.error { display: block; background: var(--danger-bg); color: var(--danger); }
+.status-bar.info { display: block; background: var(--info-bg); color: var(--info); }
+.config-card { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1rem 1.5rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 12px; }
+.config-card label { font-size: 12px; color: var(--text-sec); white-space: nowrap; font-weight: 500; }
+.config-card input { flex: 1; font-family: var(--font-mono); font-size: 12px; background: var(--surface); }
+.rewriting { opacity: 0.5; }
+.note { font-size: 12px; color: var(--text-hint); margin-bottom: 1.5rem; padding: 0 4px; }
+@media (max-width: 560px) {
+  .grid2, .grid3 { grid-template-columns: 1fr; }
+  .variant-row, .variant-header { grid-template-columns: 1fr 1fr; }
+}
 </style>
 </head>
 <body>
 <div class="page-wrap">
 
-  <div class="page-header">
-    <div class="logo-mark"><i class="ti ti-shopping-bag"></i></div>
-    <div>
-      <h1>Product aanmaken</h1>
-      <p>nxacmt-ks.myshopify.com</p>
-    </div>
+<div class="page-header">
+  <div class="logo-mark"><i class="ti ti-shopping-bag"></i></div>
+  <div>
+    <h1>Product aanmaken</h1>
+    <p>nxacmt-ks.myshopify.com</p>
+  </div>
+</div>
+
+<div class="config-card">
+  <label>Shopify token</label>
+  <input type="password" id="api-token" placeholder="Wordt automatisch ingevuld na verbinden...">
+  <a href="/.netlify/functions/auth" style="display:inline-flex;align-items:center;gap:6px;font-family:var(--font);font-size:13px;font-weight:500;padding:8px 14px;border-radius:10px;border:1px solid rgba(0,0,0,0.18);background:#fff;color:#6b6b67;text-decoration:none;white-space:nowrap;flex-shrink:0"><i class="ti ti-plug" style="font-size:14px"></i> Verbinden</a>
+</div>
+<p class="note">Token wordt lokaal opgeslagen na verbinden.</p>
+
+<div class="card">
+  <div class="card-label">Foto's</div>
+  <div class="photo-zone" id="drop-zone" onclick="document.getElementById('photo-input').click()">
+    <i class="ti ti-photo-up"></i>
+    <span>Klik om foto's te uploaden of sleep ze hiernaartoe</span>
+  </div>
+  <input type="file" id="photo-input" multiple accept="image/*">
+  <div class="photo-preview" id="photo-preview"></div>
+</div>
+
+<div class="card">
+  <div class="card-label">Productinfo</div>
+
+  <div class="field" style="margin-bottom:14px">
+    <label>Titel</label>
+    <input type="text" id="title" placeholder="bijv. Prada L'Homme Eau de Toilette">
   </div>
 
-  <div class="config-card">
-    <label>Shopify token</label>
-    <input type="password" id="api-token" placeholder="Wordt automatisch ingevuld na verbinden...">
-    <a href="/.netlify/functions/auth" style="display:inline-flex;align-items:center;gap:6px;font-family:var(--font);font-size:13px;font-weight:500;padding:8px 14px;border-radius:10px;border:1px solid rgba(0,0,0,0.18);background:#fff;color:#6b6b67;text-decoration:none;white-space:nowrap;flex-shrink:0"><i class="ti ti-plug" style="font-size:14px"></i> Verbinden met Shopify</a>
-  </div>
-  <p class="note">Klik op "Verbinden met Shopify" voor automatische login. Token wordt lokaal opgeslagen.</p>
-
-  <div class="card">
-    <div class="card-label">Foto's</div>
-    <div class="photo-zone" id="drop-zone" onclick="document.getElementById('photo-input').click()">
-      <i class="ti ti-photo-up"></i>
-      <span>Klik om foto's te uploaden of sleep ze hiernaartoe</span>
+  <div class="field">
+    <div class="row-between">
+      <label>Beschrijving</label>
+      <button class="btn" id="rewrite-btn" onclick="rewriteDescription()">
+        <i class="ti ti-wand"></i> Herschrijf professioneel
+      </button>
     </div>
-    <input type="file" id="photo-input" multiple accept="image/*">
-    <div class="photo-preview" id="photo-preview"></div>
+    <textarea id="description" placeholder="Plak hier de originele beschrijving..."></textarea>
   </div>
 
-  <div class="card">
-    <div class="card-label">Productinfo</div>
-    <div class="field" style="margin-bottom:14px">
-      <label>Titel</label>
-      <input type="text" id="title" placeholder="bijv. Prada L'Homme Eau de Toilette">
-    </div>
-    <div class="field">
-      <div class="row-between">
-        <label>Beschrijving</label>
-        <button class="btn" id="rewrite-btn" onclick="rewriteDescription()">
-          <i class="ti ti-wand"></i> Herschrijf professioneel
-        </button>
-      </div>
-      <textarea id="description" placeholder="Plak hier de originele beschrijving..."></textarea>
-    </div>
-  </div>
-
-  <div class="card">
+  <div class="section-divider">
     <div class="card-label">Meta fields</div>
-    <div class="grid2" style="margin-bottom:14px">
+    <div class="grid2" style="margin-bottom:12px">
       <div class="field">
         <label>Parfum type (fragrance_type)</label>
         <select id="fragrance-type">
@@ -175,86 +175,87 @@
         <input type="number" id="review-rating" placeholder="bijv. 4.7" step="0.1" min="0" max="5">
       </div>
     </div>
-    <div class="field">
+    <div class="field" style="margin-bottom:12px">
       <label>Review aantal (review_count)</label>
       <div class="inline-row">
         <input type="number" id="review-count" placeholder="bijv. 312" style="max-width:180px">
         <button class="btn" onclick="randomReviews()"><i class="ti ti-dice"></i> Willekeurig</button>
       </div>
     </div>
-  </div>
-
-  <div class="card">
-    <div class="card-label">Merk logo (brand_logo)</div>
-    <p style="font-size:13px;color:var(--text-sec);margin-bottom:10px">Selecteer het logo uit Shopify Content → Files</p>
-    <div class="inline-row" style="margin-bottom:8px">
-      <input type="text" id="logo-search" placeholder="Zoek bestandsnaam..." style="max-width:240px" oninput="filterLogos(this.value)">
-      <button class="btn" onclick="loadLogos()"><i class="ti ti-refresh"></i> Laden uit Shopify</button>
-    </div>
-    <div id="logo-status" style="font-size:12px;color:var(--text-hint);margin-bottom:4px"></div>
-    <div class="logo-grid" id="logo-grid">
-      <div style="font-size:13px;color:var(--text-hint);padding:8px;grid-column:1/-1">Klik op "Laden uit Shopify"</div>
-    </div>
-    <input type="hidden" id="selected-logo-url">
-    <div id="selected-logo-name" style="font-size:12px;color:var(--success);margin-top:8px;font-weight:500"></div>
-  </div>
-
-  <div class="card">
-    <div class="card-label">Prijs</div>
-    <div class="grid3">
-      <div class="field"><label>Prijs (€)</label><input type="number" id="price" placeholder="0.00" step="0.01"></div>
-      <div class="field"><label>Vergelijkingsprijs (€)</label><input type="number" id="compare-price" placeholder="0.00" step="0.01"></div>
-      <div class="field"><label>SKU</label><input type="text" id="sku" placeholder="optioneel"></div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-label">Varianten</div>
-    <div id="variants-container">
-      <div class="variant-row" data-idx="0">
-        <div class="field"><label>Naam</label><input type="text" placeholder="bijv. 50ml" class="v-name"></div>
-        <div class="field"><label>Prijs (€)</label><input type="number" placeholder="0.00" step="0.01" class="v-price"></div>
-        <div class="field"><label>Vergelijkingsprijs (€)</label><input type="number" placeholder="0.00" step="0.01" class="v-compare"></div>
-        <div><button class="btn btn-icon" onclick="removeVariant(this)"><i class="ti ti-trash"></i></button></div>
+    <div class="grid2">
+      <div class="field">
+        <label>Ingrediënten (custom.ingredients)</label>
+        <textarea id="ingredients" placeholder="Ingrediëntenlijst..."></textarea>
+      </div>
+      <div class="field">
+        <label>Fabrikant (custom.manufacturer)</label>
+        <textarea id="manufacturer" placeholder="Fabrikant info..."></textarea>
       </div>
     </div>
-    <button class="btn btn-ghost" onclick="addVariant()"><i class="ti ti-plus"></i> Variant toevoegen</button>
-    <div class="toggle-wrap" style="margin-top:14px;border-top:1px solid var(--border);padding-top:14px">
-      <label class="toggle">
-        <input type="checkbox" id="track-qty" onchange="toggleQty()">
-        <span class="toggle-slider"></span>
-      </label>
-      <label style="font-size:14px;cursor:pointer" for="track-qty">Voorraad bijhouden per variant</label>
-    </div>
-    <div class="qty-fields" id="qty-fields">
-      <p style="font-size:12px;color:var(--text-hint);margin-bottom:8px">Beginvoorraad per variant</p>
-      <div id="qty-inputs"></div>
-    </div>
   </div>
+</div>
 
-  <div class="card">
-    <div class="card-label">Collectie / merk tag</div>
-    <div class="tag-grid" id="tag-grid"></div>
+<div class="card">
+  <div class="card-label">Merk logo (brand_logo)</div>
+  <p style="font-size:13px;color:var(--text-sec);margin-bottom:10px">Selecteer het logo uit Shopify Content → Files</p>
+  <div class="inline-row" style="margin-bottom:8px">
+    <input type="text" id="logo-search" placeholder="Zoek bestandsnaam..." style="max-width:240px" oninput="filterLogos(this.value)">
+    <button class="btn" onclick="loadLogos()"><i class="ti ti-refresh"></i> Laden uit Shopify</button>
   </div>
+  <div id="logo-status" style="font-size:12px;color:var(--text-hint);margin-bottom:4px"></div>
+  <div class="logo-grid" id="logo-grid">
+    <div style="font-size:13px;color:var(--text-hint);padding:8px;grid-column:1/-1">Klik op "Laden uit Shopify"</div>
+  </div>
+  <input type="hidden" id="selected-logo-url">
+  <div id="selected-logo-name" style="font-size:12px;color:var(--success);margin-top:8px;font-weight:500"></div>
+</div>
 
-  <div class="card">
-    <div class="card-label">Ingrediënten & fabrikant</div>
-    <div class="grid2">
-      <div class="field"><label>Ingrediënten</label><textarea id="ingredients" placeholder="Ingrediëntenlijst..."></textarea></div>
-      <div class="field"><label>Fabrikant</label><textarea id="manufacturer" placeholder="Fabrikant info..."></textarea></div>
+<div class="card">
+  <div class="card-label">Prijs</div>
+  <div class="grid3">
+    <div class="field"><label>Prijs (€)</label><input type="number" id="price" placeholder="0.00" step="0.01"></div>
+    <div class="field"><label>Vergelijkingsprijs (€)</label><input type="number" id="compare-price" placeholder="0.00" step="0.01"></div>
+    <div class="field"><label>SKU</label><input type="text" id="sku" placeholder="optioneel"></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-label">Varianten</div>
+  <div class="variant-header">
+    <span>Naam</span>
+    <span>Prijs (€)</span>
+    <span>Vergelijkingsprijs (€)</span>
+    <span style="text-align:center">Track qty</span>
+    <span></span>
+  </div>
+  <div id="variants-container">
+    <div class="variant-row" data-idx="0">
+      <input type="text" placeholder="bijv. 50ml" class="v-name">
+      <input type="number" placeholder="0.00" step="0.01" class="v-price">
+      <input type="number" placeholder="0.00" step="0.01" class="v-compare">
+      <div style="display:flex;justify-content:center">
+        <label class="toggle"><input type="checkbox" class="v-track"><span class="toggle-slider"></span></label>
+      </div>
+      <button class="btn btn-icon" onclick="removeVariant(this)"><i class="ti ti-trash"></i></button>
     </div>
   </div>
+  <button class="btn btn-ghost" onclick="addVariant()"><i class="ti ti-plus"></i> Variant toevoegen</button>
+</div>
 
-  <div class="card">
-    <button class="btn btn-primary" id="submit-btn" onclick="submitProduct()">
-      <i class="ti ti-send"></i> Aanmaken in Shopify
-    </button>
-    <div class="status-bar" id="status-bar"></div>
-  </div>
+<div class="card">
+  <div class="card-label">Collectie / merk tag</div>
+  <div class="tag-grid" id="tag-grid"></div>
+</div>
+
+<div class="card">
+  <button class="btn btn-primary" id="submit-btn" onclick="submitProduct()">
+    <i class="ti ti-send"></i> Aanmaken in Shopify
+  </button>
+  <div class="status-bar" id="status-bar"></div>
+</div>
 
 </div>
 <script>
-// Auto-fill token from OAuth redirect
 (function() {
   const params = new URLSearchParams(window.location.search);
   const token = params.get('token');
@@ -271,14 +272,13 @@
   }
 })();
 
-const TAGS = ['Lataffa','Prada','Montale','Armani','Hugo Boss','Viktor & Rolf','Xerjoff','Tom Ford','Gisada','Guerlain','INITIO','KAYALI','Maison Francis Kurkdijian','Marc Jacobs','Moschino','Nishane','Parfums de Marly','Zadig & Voltaire','Bvlgari','Carolina Herrera','Dolce & Gabbana','Hermès','Creed','Chloé','Azzaro','Yves Saint Laurent','Versace','Jean Paul Gaultier','Gucci','Lancôme','Mugler','Rabanne','Narciso Rodriguez','Burberry','Valentino','Kenzo','Givenchy','Dames','Heren'];
+const TAGS = ['Lataffa','Prada','Montale','Armani','Hugo Boss','Viktor & Rolf','Xerjoff','Tom Ford','Gisada','Guerlain','INITIO','KAYALI','Maison Francis Kurkdijian','Marc Jacobs','Moschino','Nishane','Parfums de Marly','Zadig & Voltaire','Bvlgari','Carolina Herrera','Dolce & Gabbana','Hermes','Creed','Chloe','Azzaro','Yves Saint Laurent','Versace','Jean Paul Gaultier','Gucci','Lancome','Mugler','Rabanne','Narciso Rodriguez','Burberry','Valentino','Kenzo','Givenchy','Dames','Heren'];
 
 let selectedTags = [], photos = [], allLogos = [], variantCount = 1;
 
 function getToken() { return document.getElementById('api-token').value.trim(); }
 function shopifyHeaders() { return { 'Content-Type': 'application/json', 'x-shopify-token': getToken() }; }
 
-// Tags
 const tagGrid = document.getElementById('tag-grid');
 TAGS.forEach(tag => {
   const el = document.createElement('span');
@@ -291,7 +291,6 @@ TAGS.forEach(tag => {
   tagGrid.appendChild(el);
 });
 
-// Foto upload
 document.getElementById('photo-input').onchange = e => Array.from(e.target.files).forEach(addPhoto);
 const dz = document.getElementById('drop-zone');
 dz.addEventListener('dragover', e => { e.preventDefault(); dz.style.background = 'var(--surface2)'; });
@@ -310,54 +309,28 @@ function renderPhotos() {
   photos.forEach((ph, i) => {
     const d = document.createElement('div');
     d.className = 'photo-thumb';
-    d.innerHTML = `<img src="${ph.dataUrl}" alt=""><button onclick="removePhoto(${i})"><i class="ti ti-x"></i></button>`;
+    d.innerHTML = '<img src="' + ph.dataUrl + '" alt=""><button onclick="removePhoto(' + i + ')"><i class="ti ti-x"></i></button>';
     p.appendChild(d);
   });
 }
 function removePhoto(i) { photos.splice(i, 1); renderPhotos(); }
 
-// Varianten
 function addVariant() {
   const c = document.getElementById('variants-container');
   const row = document.createElement('div');
   row.className = 'variant-row';
   row.dataset.idx = variantCount++;
-  row.innerHTML = `<div class="field"><label>Naam</label><input type="text" placeholder="bijv. 100ml" class="v-name"></div><div class="field"><label>Prijs (€)</label><input type="number" placeholder="0.00" step="0.01" class="v-price"></div><div class="field"><label>Vergelijkingsprijs (€)</label><input type="number" placeholder="0.00" step="0.01" class="v-compare"></div><div><button class="btn btn-icon" onclick="removeVariant(this)"><i class="ti ti-trash"></i></button></div>`;
+  row.innerHTML = '<input type="text" placeholder="bijv. 100ml" class="v-name"><input type="number" placeholder="0.00" step="0.01" class="v-price"><input type="number" placeholder="0.00" step="0.01" class="v-compare"><div style="display:flex;justify-content:center"><label class="toggle"><input type="checkbox" class="v-track"><span class="toggle-slider"></span></label></div><button class="btn btn-icon" onclick="removeVariant(this)"><i class="ti ti-trash"></i></button>';
   c.appendChild(row);
-  if (document.getElementById('track-qty').checked) updateQtyInputs();
 }
 function removeVariant(btn) {
-  if (document.querySelectorAll('.variant-row').length > 1) {
-    btn.closest('.variant-row').remove();
-    if (document.getElementById('track-qty').checked) updateQtyInputs();
-  }
+  if (document.querySelectorAll('.variant-row').length > 1) btn.closest('.variant-row').remove();
 }
-function toggleQty() {
-  const on = document.getElementById('track-qty').checked;
-  document.getElementById('qty-fields').style.display = on ? 'block' : 'none';
-  if (on) updateQtyInputs();
-}
-function updateQtyInputs() {
-  const c = document.getElementById('qty-inputs');
-  c.innerHTML = '';
-  document.querySelectorAll('.variant-row').forEach((row, i) => {
-    const name = row.querySelector('.v-name').value || `Variant ${i + 1}`;
-    const d = document.createElement('div');
-    d.className = 'qty-row';
-    d.innerHTML = `<label>${name}</label><input type="number" class="v-qty" data-idx="${i}" placeholder="0" min="0">`;
-    c.appendChild(d);
-  });
-}
-document.getElementById('variants-container').addEventListener('input', () => {
-  if (document.getElementById('track-qty').checked) updateQtyInputs();
-});
 
-// Random reviews
 function randomReviews() {
   document.getElementById('review-count').value = Math.floor(Math.random() * (850 - 120 + 1)) + 120;
 }
 
-// Herschrijf beschrijving
 async function rewriteDescription() {
   const desc = document.getElementById('description').value.trim();
   const title = document.getElementById('title').value.trim();
@@ -381,7 +354,6 @@ async function rewriteDescription() {
   document.getElementById('description').classList.remove('rewriting');
 }
 
-// Logo's laden via function
 async function loadLogos() {
   if (!getToken()) { showStatus('Vul eerst je API token in', 'error'); return; }
   const statusEl = document.getElementById('logo-status');
@@ -401,11 +373,11 @@ function renderLogos(logos) {
   if (!logos.length) { grid.innerHTML = '<div style="font-size:13px;color:var(--text-hint);padding:8px;grid-column:1/-1">Geen afbeeldingen gevonden</div>'; return; }
   grid.innerHTML = '';
   logos.forEach(logo => {
-    const previewUrl = logo.preview_image?.src || logo.url || '';
-    const name = logo.filename || logo.url?.split('/').pop() || 'bestand';
+    const previewUrl = logo.url || '';
+    const name = logo.filename || (logo.url ? logo.url.split('/').pop() : 'bestand');
     const div = document.createElement('div');
     div.className = 'logo-item';
-    div.innerHTML = previewUrl ? `<img src="${previewUrl}" alt="${name}"><span>${name}</span>` : `<i class="ti ti-file"></i><span>${name}</span>`;
+    div.innerHTML = previewUrl ? '<img src="' + previewUrl + '" alt="' + name + '"><span>' + name + '</span>' : '<i class="ti ti-file"></i><span>' + name + '</span>';
     div.onclick = () => {
       document.querySelectorAll('.logo-item').forEach(el => el.classList.remove('selected'));
       div.classList.add('selected');
@@ -419,7 +391,6 @@ function filterLogos(q) {
   renderLogos(allLogos.filter(l => (l.filename || l.url || '').toLowerCase().includes(q.toLowerCase())));
 }
 
-// Product aanmaken
 async function submitProduct() {
   if (!getToken()) { showStatus('Vul eerst je API token in', 'error'); return; }
   const title = document.getElementById('title').value.trim();
@@ -430,19 +401,17 @@ async function submitProduct() {
   btn.innerHTML = '<i class="ti ti-loader"></i> Bezig...';
   showStatus('Product wordt aangemaakt...', 'info');
 
-  const trackQty = document.getElementById('track-qty').checked;
   const variants = [];
-  document.querySelectorAll('.variant-row').forEach((row, i) => {
+  document.querySelectorAll('.variant-row').forEach(row => {
     const name = row.querySelector('.v-name').value.trim();
     const price = row.querySelector('.v-price').value;
     const compare = row.querySelector('.v-compare').value;
-    const qtyInput = document.querySelectorAll('.v-qty')[i];
+    const track = row.querySelector('.v-track').checked;
     variants.push({
       title: name || 'Standaard',
       price: price || '0.00',
       compare_at_price: compare || null,
-      inventory_management: trackQty ? 'shopify' : null,
-      inventory_quantity: trackQty ? (parseInt(qtyInput?.value) || 0) : null
+      inventory_management: track ? 'shopify' : null
     });
   });
 
@@ -454,15 +423,15 @@ async function submitProduct() {
   const rc = document.getElementById('review-count').value;
   if (rc) metafields.push({ namespace: 'custom', key: 'review_count', value: rc, type: 'number_integer' });
   const logoUrl = document.getElementById('selected-logo-url').value;
-  if (logoUrl) metafields.push({ namespace: 'custom', key: 'brand_logo', value: logoUrl, type: 'url' });
+  if (logoUrl) metafields.push({ namespace: 'custom', key: 'brand_logo', value: logoUrl, type: 'file_reference' });
+  const ing = document.getElementById('ingredients').value.trim();
+  if (ing) metafields.push({ namespace: 'custom', key: 'ingredients', value: ing, type: 'multi_line_text_field' });
+  const mfr = document.getElementById('manufacturer').value.trim();
+  if (mfr) metafields.push({ namespace: 'custom', key: 'manufacturer', value: mfr, type: 'single_line_text_field' });
 
   const bodyParts = [];
   const desc = document.getElementById('description').value.trim();
   if (desc) bodyParts.push(desc);
-  const ing = document.getElementById('ingredients').value.trim();
-  if (ing) bodyParts.push('<h3>Ingrediënten</h3>' + ing);
-  const mfr = document.getElementById('manufacturer').value.trim();
-  if (mfr) bodyParts.push('<h3>Fabrikant</h3>' + mfr);
 
   try {
     const res = await fetch('/.netlify/functions/product', {
@@ -482,15 +451,16 @@ async function submitProduct() {
     const data = await res.json();
     const productId = data.product.id;
 
-    showStatus(`Product aangemaakt (${photos.length} foto's worden geüpload...)`, 'info');
-
-    for (const photo of photos) {
-      const b64 = photo.dataUrl.split(',')[1];
-      await fetch('/.netlify/functions/upload-image', {
-        method: 'POST',
-        headers: shopifyHeaders(),
-        body: JSON.stringify({ productId, attachment: b64, filename: photo.file.name })
-      });
+    if (photos.length > 0) {
+      showStatus('Product aangemaakt — ' + photos.length + ' fotos uploaden...', 'info');
+      for (const photo of photos) {
+        const b64 = photo.dataUrl.split(',')[1];
+        await fetch('/.netlify/functions/upload-image', {
+          method: 'POST',
+          headers: shopifyHeaders(),
+          body: JSON.stringify({ productId, attachment: b64, filename: photo.file.name })
+        });
+      }
     }
 
     showStatus('Product succesvol aangemaakt in Shopify!', 'success');
