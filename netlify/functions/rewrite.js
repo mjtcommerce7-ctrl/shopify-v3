@@ -23,26 +23,7 @@ exports.handler = async function(event) {
         max_tokens: 1000,
         messages: [{
           role: 'user',
-          content: `Herschrijf de volgende parfumbeschrijving voor een professionele Nederlandse parfumwebshop.
-
-Belangrijke regels:
-- Geef de output terug als nette HTML.
-- Gebruik voor productspecificaties bovenaan een <div class="perfume-specs"> met per specificatie een losse <div class="perfume-spec-row">.
-- Zet de naam van de specificatie in <strong> en de waarde er direct achter.
-- Gebruik voor de beschrijvende tekst losse <p>-alinea's.
-- Behoud exact dezelfde volgorde van alle informatie.
-- Behoud alle productspecificaties zoals artikelnummer, geurnoot, topnoot, hartnoot, basisnoot, navulbaar, producttype, toepassingsgebied en trend.
-- Herschrijf alleen de beschrijvende tekst zodat deze vloeiender, professioneler en beter leesbaar wordt.
-- Verwijder geen informatie en voeg geen nieuwe informatie toe.
-- Gebruik natuurlijk, correct en professioneel Nederlands.
-- Behoud een premium parfumwebshop-stijl.
-- Geef uitsluitend de HTML terug.
-- Geen markdown, geen codeblok, geen uitleg, geen intro.
-
-${title ? 'Productnaam: ' + title + '.' : ''}
-
-Originele tekst:
-${description}`
+          content: `Verwerk de onderstaande parfuminformatie naar een vaste HTML-structuur voor een Nederlandse parfumwebshop. Gebruik altijd exact dit formaat:\n\n1. Begin met een <ul> met alle productspecificaties als <li> items (artikelnummer, geurnoot, topnoten, hartnoten, basisnoten, navulbaar, producttype, toepassingsgebied, trend, etc.). Zet de naam vet: <li><strong>Geurnoot:</strong> Zoet</li>. Geen lege regels tussen de items.\n\n2. Daarna direct de beschrijvende tekst als losse <p> alinea's. Verwijder tussenkopjes zoals GEURFAMILIE, TYPE GEUR, BESCHRIJVING VAN DE GEUR etc. Verwerk die informatie in de lopende tekst. Herschrijf de beschrijvende tekst zodat die vloeiend, professioneel en goed leesbaar is. Geen lege <p> tags of extra witruimte tussen alinea's.\n\nGeef uitsluitend de HTML terug. Geen markdown, geen codeblok, geen uitleg.${title ? ' Productnaam: ' + title + '.' : ''}\n\nOriginele tekst:\n${description}`
         }]
       })
     });
