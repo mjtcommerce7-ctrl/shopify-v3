@@ -26,19 +26,20 @@ exports.handler = async function(event) {
           content: `Herschrijf de volgende parfumbeschrijving voor een professionele Nederlandse parfumwebshop.
 
 Belangrijke regels:
-- Behoud exact dezelfde structuur als het origineel.
-- Behoud productspecificaties zoals artikelnummer, geurnoten, topnoten, hartnoten, basisnoten, producttype, toepassingsgebied en overige producteigenschappen als losse regels bovenaan.
-- Behoud de volgorde van alle informatie.
+- Geef de output terug als nette HTML.
+- Gebruik voor productspecificaties bovenaan een <div class="perfume-specs"> met per specificatie een losse <div class="perfume-spec-row">.
+- Zet de naam van de specificatie in <strong> en de waarde er direct achter.
+- Gebruik voor de beschrijvende tekst losse <p>-alinea's.
+- Behoud exact dezelfde volgorde van alle informatie.
+- Behoud alle productspecificaties zoals artikelnummer, geurnoot, topnoot, hartnoot, basisnoot, navulbaar, producttype, toepassingsgebied en trend.
 - Herschrijf alleen de beschrijvende tekst zodat deze vloeiender, professioneler en beter leesbaar wordt.
 - Verwijder geen informatie en voeg geen nieuwe informatie toe.
-- Gebruik natuurlijk en correct Nederlands.
-- Behoud de premium uitstraling van het merk.
-- Maak de tekst overzichtelijk met duidelijke alinea's.
-- Geurnoten, kenmerken en productspecificaties mogen niet worden samengevat of herschreven naar bulletpoints als deze oorspronkelijk geen bulletpoints zijn.
-- Geef uitsluitend de uiteindelijke beschrijving terug.
-- Geen introductie, geen conclusie, geen opmerkingen.
+- Gebruik natuurlijk, correct en professioneel Nederlands.
+- Behoud een premium parfumwebshop-stijl.
+- Geef uitsluitend de HTML terug.
+- Geen markdown, geen codeblok, geen uitleg, geen intro.
 
-${title ? ' Productnaam: ' + title + '.' : ''}
+${title ? 'Productnaam: ' + title + '.' : ''}
 
 Originele tekst:
 ${description}`
