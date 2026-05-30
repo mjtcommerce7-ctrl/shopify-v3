@@ -13,7 +13,7 @@ exports.handler = async function(event) {
 
   // Fix variants: als er meerdere varianten zijn, voeg een option toe
   if (product.variants && product.variants.length > 1) {
-    product.options = [body.optionName || 'Formaat'];
+    product.options = [{ name: body.optionName || 'Formaat' }];
     product.variants = product.variants.map(v => ({
       ...v,
       option1: v.title
