@@ -13,7 +13,11 @@ exports.handler = async function(event) {
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_KEY, 'anthropic-version': '2023-06-01' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': ANTHROPIC_KEY,
+        'anthropic-version': '2023-06-01'
+      },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
         max_tokens: 1000,
@@ -23,9 +27,19 @@ exports.handler = async function(event) {
         }]
       })
     });
+
     const data = await res.json();
+    
+    if (data.error) {
+      return { statusCode: 500, body: JSON.stringify({ error: data.error.message, full: data }) };
+    }
+
     const text = data.content?.find(b => b.type === 'text')?.text || '';
-    return { statusCode: 200, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ result: text }) };
+    return {
+      statusCode: 200,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ result: text, debug: data.usage })
+    };
   } catch(e) {
     return { statusCode: 500, body: JSON.stringify({ error: e.message }) };
   }
