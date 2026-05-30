@@ -647,7 +647,8 @@ async function submitProduct() {
   const mfrHtml = document.getElementById('manufacturer').innerHTML.trim();
   if (mfrHtml) metafields.push({ namespace: 'custom', key: 'fabrikant', value: htmlToRichText(mfrHtml), type: 'rich_text_field' });
 
-const desc = document.getElementById('description').innerHTML.trim().replace(/<p><br><\/p>/g, '').replace(/<p>\s*<\/p>/g, '');
+const rawDesc = document.getElementById('description').innerHTML.trim().replace(/<p><br><\/p>/g, '').replace(/<p>\s*<\/p>/g, '');
+const desc = rawDesc.replace(/<\/p>\s*<p>/g, '<br>').replace(/<p>/g, '').replace(/<\/p>/g, '');
 
   try {
     const res = await fetch('/.netlify/functions/product', {
