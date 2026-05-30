@@ -23,7 +23,25 @@ exports.handler = async function(event) {
         max_tokens: 1000,
         messages: [{
           role: 'user',
-          content: `Herschrijf de volgende parfumbeschrijving naar een professionele, verleidelijke tekst voor een Nederlandse parfumwebshop. Gebruik rijke, sensuele taal die past bij luxe parfumerie. Geen opsommingstekens. Maximaal 3 alinea's. Geef alleen de tekst terug, geen intro of uitleg.${title ? ' Productnaam: ' + title + '.' : ''}\n\nOriginele tekst:\n${description}`
+          content: `Herschrijf de volgende parfumbeschrijving voor een professionele Nederlandse parfumwebshop.
+
+Belangrijke regels:
+- Behoud exact dezelfde structuur als het origineel.
+- Behoud productspecificaties zoals artikelnummer, geurnoten, topnoten, hartnoten, basisnoten, producttype, toepassingsgebied en overige producteigenschappen als losse regels bovenaan.
+- Behoud de volgorde van alle informatie.
+- Herschrijf alleen de beschrijvende tekst zodat deze vloeiender, professioneler en beter leesbaar wordt.
+- Verwijder geen informatie en voeg geen nieuwe informatie toe.
+- Gebruik natuurlijk en correct Nederlands.
+- Behoud de premium uitstraling van het merk.
+- Maak de tekst overzichtelijk met duidelijke alinea's.
+- Geurnoten, kenmerken en productspecificaties mogen niet worden samengevat of herschreven naar bulletpoints als deze oorspronkelijk geen bulletpoints zijn.
+- Geef uitsluitend de uiteindelijke beschrijving terug.
+- Geen introductie, geen conclusie, geen opmerkingen.
+
+${title ? ' Productnaam: ' + title + '.' : ''}
+
+Originele tekst:
+${description}`
         }]
       })
     });
