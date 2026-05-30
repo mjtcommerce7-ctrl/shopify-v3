@@ -381,7 +381,7 @@ function renderLogos(logos) {
     div.onclick = () => {
       document.querySelectorAll('.logo-item').forEach(el => el.classList.remove('selected'));
       div.classList.add('selected');
-      document.getElementById('selected-logo-url').value = logo.url || '';
+      document.getElementById('selected-logo-url').value = logo.gid || '';
       document.getElementById('selected-logo-name').textContent = 'Geselecteerd: ' + name;
     };
     grid.appendChild(div);
