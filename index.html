@@ -457,31 +457,47 @@ function htmlToRichText(html) {
   const div = document.createElement('div');
   div.innerHTML = html;
   const children = [];
-  function parseNode(node) {
-    if (node.nodeType === 3) {
-      const val = node.textContent;
-      if (val) return { type: 'text', value: val };
-      return null;
-    }
-    if (node.nodeType !== 1) return null;
-    const tag = node.tagName.toLowerCase();
-    const kids = Array.from(node.childNodes).map(parseNode).filter(Boolean);
-    if (tag === 'strong' || tag === 'b') return { type: 'text', value: node.textContent, bold: true };
-    if (tag === 'em' || tag === 'i') return { type: 'text', value: node.textContent, italic: true };
-    if (tag === 'p' || tag === 'div') return { type: 'paragraph', children: kids.length ? kids : [{ type: 'text', value: node.textContent }] };
-    if (tag === 'h2') return { type: 'heading', level: 2, children: kids.length ? kids : [{ type: 'text', value: node.textContent }] };
-    if (tag === 'h3') return { type: 'heading', level: 3, children: kids.length ? kids : [{ type: 'text', value: node.textContent }] };
-    if (tag === 'li') return { type: 'list-item', children: kids.length ? kids : [{ type: 'text', value: node.textContent }] };
-    if (tag === 'ul') return { type: 'list', listType: 'unordered', children: kids };
-    if (tag === 'ol') return { type: 'list', listType: 'ordered', children: kids };
-    if (kids.length) return { type: 'paragraph', children: kids };
-    return null;
+
+  function textNodes(node) {
+    const result = [];
+    node.childNodes.forEach(n => {
+      if (n.nodeType === 3 && n.textContent.trim()) {
+        result.push({ type: 'text', value: n.textContent });
+      } else if (n.nodeType === 1) {
+        const tag = n.tagName.toLowerCase();
+        if (tag === 'strong' || tag === 'b') result.push({ type: 'text', value: n.textContent, bold: true });
+        else if (tag === 'em' || tag === 'i') result.push({ type: 'text', value: n.textContent, italic: true });
+        else if (tag === 'br') result.push({ type: 'text', value: '\n' });
+        else result.push(...textNodes(n));
+      }
+    });
+    return result.length ? result : [{ type: 'text', value: node.textContent }];
   }
-  Array.from(div.childNodes).forEach(n => {
-    const parsed = parseNode(n);
-    if (parsed) children.push(parsed);
+
+  div.childNodes.forEach(node => {
+    if (node.nodeType === 3) {
+      const val = node.textContent.trim();
+      if (val) children.push({ type: 'paragraph', children: [{ type: 'text', value: val }] });
+    } else if (node.nodeType === 1) {
+      const tag = node.tagName.toLowerCase();
+      const text = textNodes(node);
+      if (tag === 'p' || tag === 'div') children.push({ type: 'paragraph', children: text });
+      else if (tag === 'h2') children.push({ type: 'heading', level: 2, children: text });
+      else if (tag === 'h3') children.push({ type: 'heading', level: 3, children: text });
+      else if (tag === 'ul' || tag === 'ol') {
+        const items = Array.from(node.querySelectorAll('li')).map(li => ({
+          type: 'list-item',
+          children: [{ type: 'text', value: li.textContent.trim() }]
+        }));
+        if (items.length) children.push({ type: 'list', listType: tag === 'ul' ? 'unordered' : 'ordered', children: items });
+      } else {
+        const val = node.textContent.trim();
+        if (val) children.push({ type: 'paragraph', children: [{ type: 'text', value: val }] });
+      }
+    }
   });
-  if (!children.length) children.push({ type: 'paragraph', children: [{ type: 'text', value: div.textContent }] });
+
+  if (!children.length) children.push({ type: 'paragraph', children: [{ type: 'text', value: div.textContent.trim() }] });
   return JSON.stringify({ type: 'root', children });
 }
 
