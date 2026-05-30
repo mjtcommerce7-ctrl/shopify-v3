@@ -433,7 +433,7 @@ if (emptyVariant) { showStatus('Vul een naam in voor elke variant', 'error'); em
   const logoUrl = document.getElementById('selected-logo-url').value;
   if (logoUrl) metafields.push({ namespace: 'custom', key: 'brand_logo', value: logoUrl, type: 'file_reference' });
   const ing = document.getElementById('ingredients').value.trim();
-  if (ing) metafields.push({ namespace: 'custom', key: 'ingredients', value: ing, type: 'multi_line_text_field' });
+  if (ing) metafields.push({ namespace: 'custom', key: 'ingredients', value: ing, type: 'single_line_text_field' });
   const mfr = document.getElementById('manufacturer').value.trim();
   if (mfr) metafields.push({ namespace: 'custom', key: 'manufacturer', value: mfr, type: 'single_line_text_field' });
 
