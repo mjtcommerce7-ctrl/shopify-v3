@@ -6,29 +6,30 @@ exports.handler = async function(event) {
 
   if (!SHOPIFY_TOKEN) return { statusCode: 400, body: JSON.stringify({ error: 'Geen Shopify token' }) };
 
-  try {
-    const query = `{
-      files(first: 250, query: "media_type:IMAGE") {
-        edges {
-          node {
-            ... on MediaImage {
-              id
-              image {
-                url
-                altText
-              }
-            }
-            ... on GenericFile {
-              id
+  const query = `{
+    files(first: 250, query: "media_type:IMAGE") {
+      edges {
+        node {
+          id
+          ... on MediaImage {
+            id
+            image {
               url
-              mimeType
+              altText
             }
+          }
+          ... on GenericFile {
+            id
+            url
+            mimeType
           }
         }
       }
-    }`;
+    }
+  }`;
 
-    const res = await fetch(`https://${STORE}/admin/api/2024-01/graphql.json`, {
+  try {
+    const res = await fetch('https://' + STORE + '/admin/api/2024-01/graphql.json', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -38,9 +39,10 @@ exports.handler = async function(event) {
     });
 
     const data = await res.json();
-    const files = (data.data?.files?.edges || []).map(e => ({
-      url: e.node.image?.url || e.node.url,
-      filename: e.node.image?.altText || e.node.url?.split('/').pop() || 'bestand',
+    const files = (data.data && data.data.files && data.data.files.edges ? data.data.files.edges : []).map(e => ({
+      gid: e.node.id,
+      url: (e.node.image && e.node.image.url) ? e.node.image.url : e.node.url,
+      filename: (e.node.image && e.node.image.altText) ? e.node.image.altText : (e.node.url ? e.node.url.split('/').pop().split('?')[0] : 'bestand'),
       content_type: 'image/jpeg'
     })).filter(f => f.url);
 
