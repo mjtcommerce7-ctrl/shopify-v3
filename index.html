@@ -445,7 +445,7 @@ if (emptyVariant) { showStatus('Vul een naam in voor elke variant', 'error'); em
     const res = await fetch('/.netlify/functions/product', {
       method: 'POST',
       headers: shopifyHeaders(),
-      body: JSON.stringify({ product: { title, body_html: bodyParts.join('\n\n'), tags: selectedTags.join(', '), variants, metafields } })
+     body: JSON.stringify({ product: { title, body_html: bodyParts.join('\n\n'), tags: selectedTags.join(', '), variants, metafields }, optionName: document.getElementById('option-name').value.trim() || 'Formaat' })
     });
 
     if (!res.ok) {
