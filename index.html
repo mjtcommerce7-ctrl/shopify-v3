@@ -228,23 +228,25 @@ input[type="file"] { display: none; }
   </div>
   <button type="button" class="btn" style="margin-top:20px" onclick="document.getElementById('option-name').value='Formaat'">Formaat</button>
 </div>
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr auto auto;gap:8px;margin-bottom:6px">
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr 80px auto auto;gap:8px;margin-bottom:6px">
   <span style="font-size:11px;color:var(--text-hint)">Waarde</span>
   <span style="font-size:11px;color:var(--text-hint)">Prijs (€)</span>
   <span style="font-size:11px;color:var(--text-hint)">Vergelijkingsprijs (€)</span>
-  <span style="font-size:11px;color:var(--text-hint);text-align:center">Track qty</span>
+  <span style="font-size:11px;color:var(--text-hint)">Voorraad</span>
+  <span style="font-size:11px;color:var(--text-hint);text-align:center">Track</span>
   <span></span>
 </div>
   <div id="variants-container">
-    <div class="variant-row" data-idx="0">
-      <input type="text" placeholder="bijv. 50ml" class="v-name">
-      <input type="number" placeholder="0.00" step="0.01" class="v-price">
-      <input type="number" placeholder="0.00" step="0.01" class="v-compare">
-      <div style="display:flex;justify-content:center">
-        <label class="toggle"><input type="checkbox" class="v-track"><span class="toggle-slider"></span></label>
-      </div>
-      <button class="btn btn-icon" onclick="removeVariant(this)"><i class="ti ti-trash"></i></button>
-    </div>
+    <div class="variant-row" data-idx="0" style="grid-template-columns:1fr 1fr 1fr 80px auto auto">
+  <input type="text" placeholder="bijv. 50ml" class="v-name">
+  <input type="number" placeholder="0.00" step="0.01" class="v-price">
+  <input type="number" placeholder="0.00" step="0.01" class="v-compare">
+  <input type="number" placeholder="0" min="0" class="v-qty">
+  <div style="display:flex;justify-content:center">
+    <label class="toggle"><input type="checkbox" class="v-track"><span class="toggle-slider"></span></label>
+  </div>
+  <button class="btn btn-icon" onclick="removeVariant(this)"><i class="ti ti-trash"></i></button>
+</div>
   </div>
   <button class="btn btn-ghost" onclick="addVariant()"><i class="ti ti-plus"></i> Variant toevoegen</button>
 </div>
@@ -327,7 +329,8 @@ function addVariant() {
   const row = document.createElement('div');
   row.className = 'variant-row';
   row.dataset.idx = variantCount++;
-  row.innerHTML = '<input type="text" placeholder="bijv. 100ml" class="v-name"><input type="number" placeholder="0.00" step="0.01" class="v-price"><input type="number" placeholder="0.00" step="0.01" class="v-compare"><div style="display:flex;justify-content:center"><label class="toggle"><input type="checkbox" class="v-track"><span class="toggle-slider"></span></label></div><button class="btn btn-icon" onclick="removeVariant(this)"><i class="ti ti-trash"></i></button>';
+  row.style.gridTemplateColumns = '1fr 1fr 1fr 80px auto auto';
+row.innerHTML = '<input type="text" placeholder="bijv. 100ml" class="v-name"><input type="number" placeholder="0.00" step="0.01" class="v-price"><input type="number" placeholder="0.00" step="0.01" class="v-compare"><input type="number" placeholder="0" min="0" class="v-qty"><div style="display:flex;justify-content:center"><label class="toggle"><input type="checkbox" class="v-track"><span class="toggle-slider"></span></label></div><button class="btn btn-icon" onclick="removeVariant(this)"><i class="ti ti-trash"></i></button>';
   c.appendChild(row);
 }
 function removeVariant(btn) {
@@ -419,7 +422,8 @@ if (emptyVariant) { showStatus('Vul een naam in voor elke variant', 'error'); em
       title: name || 'Standaard',
       price: price || '0.00',
       compare_at_price: compare || null,
-      inventory_management: track ? 'shopify' : null
+      inventory_management: track ? 'shopify' : null,
+inventory_quantity: track ? (parseInt(row.querySelector('.v-qty').value) || 0) : null
     });
   });
 
@@ -433,10 +437,8 @@ if (emptyVariant) { showStatus('Vul een naam in voor elke variant', 'error'); em
   const logoUrl = document.getElementById('selected-logo-url').value;
   if (logoUrl) metafields.push({ namespace: 'custom', key: 'brand_logo', value: logoUrl, type: 'file_reference' });
   const ing = document.getElementById('ingredients').value.trim();
-  if (ing) metafields.push({ namespace: 'custom', key: 'ingredients', value: ing, type: 'single_line_text_field' });
-  const mfr = document.getElementById('manufacturer').value.trim();
-  if (mfr) metafields.push({ namespace: 'custom', key: 'manufacturer', value: mfr, type: 'single_line_text_field' });
-
+  if (ing) metafields.push({ namespace: 'custom', key: 'ingredients', value: JSON.stringify({type:'root',children:[{type:'paragraph',children:[{type:'text',value:ing}]}]}), type: 'rich_text_field' });
+if (mfr) metafields.push({ namespace: 'custom', key: 'manufacturer', value: JSON.stringify({type:'root',children:[{type:'paragraph',children:[{type:'text',value:mfr}]}]}), type: 'rich_text_field' });
   const bodyParts = [];
   const desc = document.getElementById('description').value.trim();
   if (desc) bodyParts.push(desc);
