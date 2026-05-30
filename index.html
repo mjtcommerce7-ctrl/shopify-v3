@@ -69,10 +69,10 @@ input[type="file"] { display: none; }
 .photo-thumb { position: relative; width: 76px; height: 76px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); }
 .photo-thumb img { width: 100%; height: 100%; object-fit: cover; }
 .photo-thumb button { position: absolute; top: 3px; right: 3px; width: 20px; height: 20px; background: rgba(0,0,0,0.6); border: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #fff; font-size: 11px; padding: 0; }
-.variant-row { display: grid; grid-template-columns: 1fr 1fr 1fr auto auto; gap: 8px; align-items: center; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 0.5px solid var(--border); }
-.variant-row:last-child { border-bottom: none; }
-.variant-header { display: grid; grid-template-columns: 1fr 1fr 1fr auto auto; gap: 8px; margin-bottom: 6px; }
-.variant-header span { font-size: 11px; color: var(--text-hint); }
+.v-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 80px auto auto; gap: 8px; align-items: center; }
+.v-header span { font-size: 11px; color: var(--text-hint); }
+.variant-row { padding-bottom: 8px; margin-bottom: 8px; border-bottom: 0.5px solid var(--border); }
+.variant-row:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
 .tag-grid { display: flex; flex-wrap: wrap; gap: 6px; }
 .tag { padding: 5px 13px; border-radius: 99px; border: 1px solid var(--border-med); font-size: 12px; color: var(--text-sec); cursor: pointer; transition: all 0.12s; user-select: none; background: var(--surface); }
 .tag:hover { border-color: var(--text-hint); color: var(--text); }
@@ -104,9 +104,9 @@ input[type="file"] { display: none; }
 .config-card input { flex: 1; font-family: var(--font-mono); font-size: 12px; background: var(--surface); }
 .rewriting { opacity: 0.5; }
 .note { font-size: 12px; color: var(--text-hint); margin-bottom: 1.5rem; padding: 0 4px; }
-@media (max-width: 560px) {
+@media (max-width: 600px) {
   .grid2, .grid3 { grid-template-columns: 1fr; }
-  .variant-row, .variant-header { grid-template-columns: 1fr 1fr; }
+  .v-grid { grid-template-columns: 1fr 1fr; }
 }
 </style>
 </head>
@@ -140,18 +140,14 @@ input[type="file"] { display: none; }
 
 <div class="card">
   <div class="card-label">Productinfo</div>
-
   <div class="field" style="margin-bottom:14px">
     <label>Titel</label>
     <input type="text" id="title" placeholder="bijv. Prada L'Homme Eau de Toilette">
   </div>
-
   <div class="field">
     <div class="row-between">
       <label>Beschrijving</label>
-      <button class="btn" id="rewrite-btn" onclick="rewriteDescription()">
-        <i class="ti ti-wand"></i> Herschrijf professioneel
-      </button>
+      <button class="btn" id="rewrite-btn" onclick="rewriteDescription()"><i class="ti ti-wand"></i> Herschrijf professioneel</button>
     </div>
     <textarea id="description" placeholder="Plak hier de originele beschrijving..."></textarea>
   </div>
@@ -184,11 +180,11 @@ input[type="file"] { display: none; }
     </div>
     <div class="grid2">
       <div class="field">
-        <label>Ingrediënten (custom.ingredients)</label>
+        <label>Ingrediënten (custom.ingredienten)</label>
         <textarea id="ingredients" placeholder="Ingrediëntenlijst..."></textarea>
       </div>
       <div class="field">
-        <label>Fabrikant (custom.manufacturer)</label>
+        <label>Fabrikant (custom.fabrikant)</label>
         <textarea id="manufacturer" placeholder="Fabrikant info..."></textarea>
       </div>
     </div>
@@ -206,7 +202,7 @@ input[type="file"] { display: none; }
   <div class="logo-grid" id="logo-grid">
     <div style="font-size:13px;color:var(--text-hint);padding:8px;grid-column:1/-1">Klik op "Laden uit Shopify"</div>
   </div>
-  <input type="hidden" id="selected-logo-url">
+  <input type="hidden" id="selected-logo-gid">
   <div id="selected-logo-name" style="font-size:12px;color:var(--success);margin-top:8px;font-weight:500"></div>
 </div>
 
@@ -221,32 +217,34 @@ input[type="file"] { display: none; }
 
 <div class="card">
   <div class="card-label">Varianten</div>
- <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
-  <div class="field" style="max-width:240px">
-    <label>Optienaam</label>
-    <input type="text" id="option-name" placeholder="bijv. Formaat">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+    <div class="field" style="max-width:240px">
+      <label>Optienaam</label>
+      <input type="text" id="option-name" placeholder="bijv. Formaat">
+    </div>
+    <button type="button" class="btn" style="margin-top:20px" onclick="document.getElementById('option-name').value='Formaat'">Formaat</button>
   </div>
-  <button type="button" class="btn" style="margin-top:20px" onclick="document.getElementById('option-name').value='Formaat'">Formaat</button>
-</div>
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr 80px auto auto;gap:8px;margin-bottom:6px">
-  <span style="font-size:11px;color:var(--text-hint)">Waarde</span>
-  <span style="font-size:11px;color:var(--text-hint)">Prijs (€)</span>
-  <span style="font-size:11px;color:var(--text-hint)">Vergelijkingsprijs (€)</span>
-  <span style="font-size:11px;color:var(--text-hint)">Voorraad</span>
-  <span style="font-size:11px;color:var(--text-hint);text-align:center">Track</span>
-  <span></span>
-</div>
+  <div class="v-grid v-header" style="margin-bottom:6px">
+    <span>Waarde</span>
+    <span>Prijs (€)</span>
+    <span>Vergelijkingsprijs (€)</span>
+    <span>Voorraad</span>
+    <span style="text-align:center">Track</span>
+    <span></span>
+  </div>
   <div id="variants-container">
-    <div class="variant-row" data-idx="0" style="grid-template-columns:1fr 1fr 1fr 80px auto auto">
-  <input type="text" placeholder="bijv. 50ml" class="v-name">
-  <input type="number" placeholder="0.00" step="0.01" class="v-price">
-  <input type="number" placeholder="0.00" step="0.01" class="v-compare">
-  <input type="number" placeholder="0" min="0" class="v-qty">
-  <div style="display:flex;justify-content:center">
-    <label class="toggle"><input type="checkbox" class="v-track"><span class="toggle-slider"></span></label>
-  </div>
-  <button class="btn btn-icon" onclick="removeVariant(this)"><i class="ti ti-trash"></i></button>
-</div>
+    <div class="variant-row" data-idx="0">
+      <div class="v-grid">
+        <input type="text" placeholder="bijv. 50ml" class="v-name">
+        <input type="number" placeholder="0.00" step="0.01" class="v-price">
+        <input type="number" placeholder="0.00" step="0.01" class="v-compare">
+        <input type="number" placeholder="0" min="0" class="v-qty">
+        <div style="display:flex;justify-content:center">
+          <label class="toggle"><input type="checkbox" class="v-track"><span class="toggle-slider"></span></label>
+        </div>
+        <button class="btn btn-icon" onclick="removeVariant(this)"><i class="ti ti-trash"></i></button>
+      </div>
+    </div>
   </div>
   <button class="btn btn-ghost" onclick="addVariant()"><i class="ti ti-plus"></i> Variant toevoegen</button>
 </div>
@@ -329,8 +327,7 @@ function addVariant() {
   const row = document.createElement('div');
   row.className = 'variant-row';
   row.dataset.idx = variantCount++;
-  row.style.gridTemplateColumns = '1fr 1fr 1fr 80px auto auto';
-row.innerHTML = '<input type="text" placeholder="bijv. 100ml" class="v-name"><input type="number" placeholder="0.00" step="0.01" class="v-price"><input type="number" placeholder="0.00" step="0.01" class="v-compare"><input type="number" placeholder="0" min="0" class="v-qty"><div style="display:flex;justify-content:center"><label class="toggle"><input type="checkbox" class="v-track"><span class="toggle-slider"></span></label></div><button class="btn btn-icon" onclick="removeVariant(this)"><i class="ti ti-trash"></i></button>';
+  row.innerHTML = '<div class="v-grid"><input type="text" placeholder="bijv. 100ml" class="v-name"><input type="number" placeholder="0.00" step="0.01" class="v-price"><input type="number" placeholder="0.00" step="0.01" class="v-compare"><input type="number" placeholder="0" min="0" class="v-qty"><div style="display:flex;justify-content:center"><label class="toggle"><input type="checkbox" class="v-track"><span class="toggle-slider"></span></label></div><button class="btn btn-icon" onclick="removeVariant(this)"><i class="ti ti-trash"></i></button></div>';
   c.appendChild(row);
 }
 function removeVariant(btn) {
@@ -384,14 +381,14 @@ function renderLogos(logos) {
   grid.innerHTML = '';
   logos.forEach(logo => {
     const previewUrl = logo.url || '';
-    const name = logo.filename || (logo.url ? logo.url.split('/').pop() : 'bestand');
+    const name = logo.filename || (logo.url ? logo.url.split('/').pop().split('?')[0] : 'bestand');
     const div = document.createElement('div');
     div.className = 'logo-item';
     div.innerHTML = previewUrl ? '<img src="' + previewUrl + '" alt="' + name + '"><span>' + name + '</span>' : '<i class="ti ti-file"></i><span>' + name + '</span>';
     div.onclick = () => {
       document.querySelectorAll('.logo-item').forEach(el => el.classList.remove('selected'));
       div.classList.add('selected');
-      document.getElementById('selected-logo-url').value = logo.gid || '';
+      document.getElementById('selected-logo-gid').value = logo.gid || '';
       document.getElementById('selected-logo-name').textContent = 'Geselecteerd: ' + name;
     };
     grid.appendChild(div);
@@ -401,11 +398,25 @@ function filterLogos(q) {
   renderLogos(allLogos.filter(l => (l.filename || l.url || '').toLowerCase().includes(q.toLowerCase())));
 }
 
+function toRichText(text) {
+  return JSON.stringify({
+    type: 'root',
+    children: text.split('\n').filter(l => l.trim()).map(line => ({
+      type: 'paragraph',
+      children: [{ type: 'text', value: line }]
+    }))
+  });
+}
+
 async function submitProduct() {
   if (!getToken()) { showStatus('Vul eerst je API token in', 'error'); return; }
   const title = document.getElementById('title').value.trim();
+  if (!title) { showStatus('Vul een titel in', 'error'); return; }
+
   const emptyVariant = Array.from(document.querySelectorAll('.v-name')).find(i => !i.value.trim());
-if (emptyVariant) { showStatus('Vul een naam in voor elke variant', 'error'); emptyVariant.focus(); return; }
+  if (emptyVariant) { showStatus('Vul een waarde in voor elke variant', 'error'); emptyVariant.focus(); return; }
+
+  const optionName = document.getElementById('option-name').value.trim() || 'Formaat';
 
   const btn = document.getElementById('submit-btn');
   btn.disabled = true;
@@ -417,13 +428,15 @@ if (emptyVariant) { showStatus('Vul een naam in voor elke variant', 'error'); em
     const name = row.querySelector('.v-name').value.trim();
     const price = row.querySelector('.v-price').value;
     const compare = row.querySelector('.v-compare').value;
+    const qty = row.querySelector('.v-qty').value;
     const track = row.querySelector('.v-track').checked;
     variants.push({
-      title: name || 'Standaard',
+      title: name,
+      option1: name,
       price: price || '0.00',
       compare_at_price: compare || null,
       inventory_management: track ? 'shopify' : null,
-inventory_quantity: track ? (parseInt(row.querySelector('.v-qty').value) || 0) : null
+      inventory_quantity: track ? (parseInt(qty) || 0) : null
     });
   });
 
@@ -434,20 +447,29 @@ inventory_quantity: track ? (parseInt(row.querySelector('.v-qty').value) || 0) :
   if (rr) metafields.push({ namespace: 'custom', key: 'review_rating', value: rr, type: 'number_decimal' });
   const rc = document.getElementById('review-count').value;
   if (rc) metafields.push({ namespace: 'custom', key: 'review_count', value: rc, type: 'number_integer' });
-  const logoUrl = document.getElementById('selected-logo-url').value;
-  if (logoUrl) metafields.push({ namespace: 'custom', key: 'brand_logo', value: logoUrl, type: 'file_reference' });
+  const logoGid = document.getElementById('selected-logo-gid').value;
+  if (logoGid) metafields.push({ namespace: 'custom', key: 'brand_logo', value: logoGid, type: 'file_reference' });
   const ing = document.getElementById('ingredients').value.trim();
-  if (ing) metafields.push({ namespace: 'custom', key: 'ingredients', value: JSON.stringify({type:'root',children:[{type:'paragraph',children:[{type:'text',value:ing}]}]}), type: 'rich_text_field' });
-if (mfr) metafields.push({ namespace: 'custom', key: 'manufacturer', value: JSON.stringify({type:'root',children:[{type:'paragraph',children:[{type:'text',value:mfr}]}]}), type: 'rich_text_field' });
-  const bodyParts = [];
+  if (ing) metafields.push({ namespace: 'custom', key: 'ingredienten', value: toRichText(ing), type: 'rich_text_field' });
+  const mfr = document.getElementById('manufacturer').value.trim();
+  if (mfr) metafields.push({ namespace: 'custom', key: 'fabrikant', value: toRichText(mfr), type: 'rich_text_field' });
+
   const desc = document.getElementById('description').value.trim();
-  if (desc) bodyParts.push(desc);
 
   try {
     const res = await fetch('/.netlify/functions/product', {
       method: 'POST',
       headers: shopifyHeaders(),
-     body: JSON.stringify({ product: { title, body_html: bodyParts.join('\n\n'), tags: selectedTags.join(', '), variants, metafields }, optionName: document.getElementById('option-name').value.trim() || 'Formaat' })
+      body: JSON.stringify({
+        product: {
+          title,
+          body_html: desc,
+          tags: selectedTags.join(', '),
+          options: [{ name: optionName }],
+          variants,
+          metafields
+        }
+      })
     });
 
     if (!res.ok) {
