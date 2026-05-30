@@ -34,6 +34,7 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); min-
 .section-divider { border-top: 1px solid var(--border); margin: 1.25rem 0; padding-top: 1.25rem; }
 .field { display: flex; flex-direction: column; gap: 5px; }
 .field label { font-size: 13px; color: var(--text-sec); }
+.field label .req { color: var(--danger); margin-left: 2px; }
 input[type="text"], input[type="number"], input[type="password"], select, textarea {
   width: 100%; font-family: var(--font); font-size: 14px; padding: 9px 12px;
   border: 1px solid var(--border-med); border-radius: var(--radius);
@@ -41,6 +42,7 @@ input[type="text"], input[type="number"], input[type="password"], select, textar
   transition: border-color 0.15s, box-shadow 0.15s; appearance: none;
 }
 input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(26,26,24,0.08); }
+input.error, select.error, .editor.error { border-color: var(--danger) !important; }
 textarea { resize: vertical; min-height: 90px; }
 select {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b6b67' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
@@ -102,17 +104,23 @@ input[type="file"] { display: none; }
 .config-card { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1rem 1.5rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 12px; }
 .config-card label { font-size: 12px; color: var(--text-sec); white-space: nowrap; font-weight: 500; }
 .config-card input { flex: 1; font-family: var(--font-mono); font-size: 12px; background: var(--surface); }
-.rewriting { opacity: 0.5; }
 .note { font-size: 12px; color: var(--text-hint); margin-bottom: 1.5rem; padding: 0 4px; }
+.editor-wrap { border: 1px solid var(--border-med); border-radius: var(--radius); overflow: hidden; }
+.editor-wrap.error { border-color: var(--danger); }
+.editor-toolbar { display: flex; gap: 4px; padding: 6px 8px; background: var(--surface2); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+.editor-toolbar .btn { padding: 4px 8px; font-size: 12px; min-width: 32px; }
+.editor-toolbar .sep { width: 1px; background: var(--border-med); margin: 2px 4px; }
+.editor { min-height: 120px; padding: 10px 12px; font-size: 14px; outline: none; line-height: 1.6; }
+.editor:empty:before { content: attr(data-placeholder); color: var(--text-hint); pointer-events: none; }
+.editor h2 { font-size: 16px; font-weight: 500; margin: 8px 0 4px; }
+.editor h3 { font-size: 14px; font-weight: 500; margin: 8px 0 4px; }
+.editor p { margin: 4px 0; }
+.editor ul, .editor ol { padding-left: 20px; margin: 4px 0; }
+.editor strong, .editor b { font-weight: 600; }
 @media (max-width: 600px) {
   .grid2, .grid3 { grid-template-columns: 1fr; }
   .v-grid { grid-template-columns: 1fr 1fr; }
 }
-  #description:empty:before { content: attr(data-placeholder); color: var(--text-hint); pointer-events: none; }
-#description h2 { font-size: 16px; font-weight: 500; margin: 8px 0 4px; }
-#description h3 { font-size: 14px; font-weight: 500; margin: 8px 0 4px; }
-#description p { margin: 4px 0; }
-#description ul, #description ol { padding-left: 20px; margin: 4px 0; }
 </style>
 </head>
 <body>
@@ -146,28 +154,28 @@ input[type="file"] { display: none; }
 <div class="card">
   <div class="card-label">Productinfo</div>
   <div class="field" style="margin-bottom:14px">
-    <label>Titel</label>
+    <label>Titel <span class="req">*</span></label>
     <input type="text" id="title" placeholder="bijv. Prada L'Homme Eau de Toilette">
   </div>
- <div class="field">
+  <div class="field">
     <div class="row-between">
-      <label>Beschrijving</label>
+      <label>Beschrijving <span class="req">*</span></label>
       <button class="btn" id="rewrite-btn" onclick="rewriteDescription()"><i class="ti ti-wand"></i> Herschrijf professioneel</button>
     </div>
-    <div style="border:1px solid var(--border-med);border-radius:var(--radius);overflow:hidden">
-      <div style="display:flex;gap:4px;padding:6px 8px;background:var(--surface2);border-bottom:1px solid var(--border);flex-wrap:wrap">
-        <button type="button" class="btn" style="padding:4px 8px;font-size:12px;min-width:32px" onclick="fmt('bold')"><i class="ti ti-bold"></i></button>
-        <button type="button" class="btn" style="padding:4px 8px;font-size:12px;min-width:32px" onclick="fmt('italic')"><i class="ti ti-italic"></i></button>
-        <button type="button" class="btn" style="padding:4px 8px;font-size:12px;min-width:32px" onclick="fmt('underline')"><i class="ti ti-underline"></i></button>
-        <div style="width:1px;background:var(--border-med);margin:2px 4px"></div>
-        <button type="button" class="btn" style="padding:4px 8px;font-size:12px" onclick="fmt('formatBlock','h2')">H2</button>
-        <button type="button" class="btn" style="padding:4px 8px;font-size:12px" onclick="fmt('formatBlock','h3')">H3</button>
-        <button type="button" class="btn" style="padding:4px 8px;font-size:12px" onclick="fmt('formatBlock','p')">P</button>
-        <div style="width:1px;background:var(--border-med);margin:2px 4px"></div>
-        <button type="button" class="btn" style="padding:4px 8px;font-size:12px" onclick="fmt('insertUnorderedList')"><i class="ti ti-list"></i></button>
-        <button type="button" class="btn" style="padding:4px 8px;font-size:12px" onclick="fmt('insertOrderedList')"><i class="ti ti-list-numbers"></i></button>
+    <div class="editor-wrap" id="desc-wrap">
+      <div class="editor-toolbar">
+        <button type="button" class="btn" onclick="fmt('bold')"><i class="ti ti-bold"></i></button>
+        <button type="button" class="btn" onclick="fmt('italic')"><i class="ti ti-italic"></i></button>
+        <button type="button" class="btn" onclick="fmt('underline')"><i class="ti ti-underline"></i></button>
+        <div class="sep"></div>
+        <button type="button" class="btn" onclick="fmt('formatBlock','h2')">H2</button>
+        <button type="button" class="btn" onclick="fmt('formatBlock','h3')">H3</button>
+        <button type="button" class="btn" onclick="fmt('formatBlock','p')">P</button>
+        <div class="sep"></div>
+        <button type="button" class="btn" onclick="fmt('insertUnorderedList')"><i class="ti ti-list"></i></button>
+        <button type="button" class="btn" onclick="fmt('insertOrderedList')"><i class="ti ti-list-numbers"></i></button>
       </div>
-      <div id="description" contenteditable="true" style="min-height:120px;padding:10px 12px;font-size:14px;outline:none;line-height:1.6" data-placeholder="Plak hier de originele beschrijving..."></div>
+      <div id="description" class="editor" contenteditable="true" data-placeholder="Plak hier de originele beschrijving..." onpaste="handlePaste(event, this)"></div>
     </div>
   </div>
 
@@ -175,7 +183,7 @@ input[type="file"] { display: none; }
     <div class="card-label">Meta fields</div>
     <div class="grid2" style="margin-bottom:12px">
       <div class="field">
-        <label>Parfum type (fragrance_type)</label>
+        <label>Parfum type <span class="req">*</span></label>
         <select id="fragrance-type">
           <option value="">Kies type...</option>
           <option>Eau de Parfum</option>
@@ -186,12 +194,12 @@ input[type="file"] { display: none; }
         </select>
       </div>
       <div class="field">
-        <label>Review score (review_rating)</label>
+        <label>Review score <span class="req">*</span></label>
         <input type="number" id="review-rating" placeholder="bijv. 4.7" step="0.1" min="0" max="5">
       </div>
     </div>
     <div class="field" style="margin-bottom:12px">
-      <label>Review aantal (review_count)</label>
+      <label>Review aantal <span class="req">*</span></label>
       <div class="inline-row">
         <input type="number" id="review-count" placeholder="bijv. 312" style="max-width:180px">
         <button class="btn" onclick="randomReviews()"><i class="ti ti-dice"></i> Willekeurig</button>
@@ -199,19 +207,35 @@ input[type="file"] { display: none; }
     </div>
     <div class="grid2">
       <div class="field">
-        <label>Ingrediënten (custom.ingredienten)</label>
-        <textarea id="ingredients" placeholder="Ingrediëntenlijst..."></textarea>
+        <label>Ingrediënten <span class="req">*</span></label>
+        <div class="editor-wrap" id="ing-wrap">
+          <div class="editor-toolbar">
+            <button type="button" class="btn" onclick="fmt2('ing','bold')"><i class="ti ti-bold"></i></button>
+            <button type="button" class="btn" onclick="fmt2('ing','italic')"><i class="ti ti-italic"></i></button>
+            <div class="sep"></div>
+            <button type="button" class="btn" onclick="fmt2('ing','insertUnorderedList')"><i class="ti ti-list"></i></button>
+          </div>
+          <div id="ingredients" class="editor" contenteditable="true" data-placeholder="Ingrediëntenlijst..." onpaste="handlePaste(event, this)"></div>
+        </div>
       </div>
       <div class="field">
-        <label>Fabrikant (custom.fabrikant)</label>
-        <textarea id="manufacturer" placeholder="Fabrikant info..."></textarea>
+        <label>Fabrikant <span class="req">*</span></label>
+        <div class="editor-wrap" id="mfr-wrap">
+          <div class="editor-toolbar">
+            <button type="button" class="btn" onclick="fmt2('mfr','bold')"><i class="ti ti-bold"></i></button>
+            <button type="button" class="btn" onclick="fmt2('mfr','italic')"><i class="ti ti-italic"></i></button>
+            <div class="sep"></div>
+            <button type="button" class="btn" onclick="fmt2('mfr','insertUnorderedList')"><i class="ti ti-list"></i></button>
+          </div>
+          <div id="manufacturer" class="editor" contenteditable="true" data-placeholder="Fabrikant info..." onpaste="handlePaste(event, this)"></div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
 <div class="card">
-  <div class="card-label">Merk logo (brand_logo)</div>
+  <div class="card-label">Merk logo <span style="color:var(--danger);font-size:11px">*</span></div>
   <p style="font-size:13px;color:var(--text-sec);margin-bottom:10px">Selecteer het logo uit Shopify Content → Files</p>
   <div class="inline-row" style="margin-bottom:8px">
     <input type="text" id="logo-search" placeholder="Zoek bestandsnaam..." style="max-width:240px" oninput="filterLogos(this.value)">
@@ -228,7 +252,7 @@ input[type="file"] { display: none; }
 <div class="card">
   <div class="card-label">Prijs</div>
   <div class="grid3">
-    <div class="field"><label>Prijs (€)</label><input type="number" id="price" placeholder="0.00" step="0.01"></div>
+    <div class="field"><label>Prijs (€) <span class="req">*</span></label><input type="number" id="price" placeholder="0.00" step="0.01"></div>
     <div class="field"><label>Vergelijkingsprijs (€)</label><input type="number" id="compare-price" placeholder="0.00" step="0.01"></div>
     <div class="field"><label>SKU</label><input type="text" id="sku" placeholder="optioneel"></div>
   </div>
@@ -238,14 +262,14 @@ input[type="file"] { display: none; }
   <div class="card-label">Varianten</div>
   <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
     <div class="field" style="max-width:240px">
-      <label>Optienaam</label>
+      <label>Optienaam <span class="req">*</span></label>
       <input type="text" id="option-name" placeholder="bijv. Formaat">
     </div>
     <button type="button" class="btn" style="margin-top:20px" onclick="document.getElementById('option-name').value='Formaat'">Formaat</button>
   </div>
   <div class="v-grid v-header" style="margin-bottom:6px">
-    <span>Waarde</span>
-    <span>Prijs (€)</span>
+    <span>Waarde <span style="color:var(--danger)">*</span></span>
+    <span>Prijs (€) <span style="color:var(--danger)">*</span></span>
     <span>Vergelijkingsprijs (€)</span>
     <span>Voorraad</span>
     <span style="text-align:center">Track</span>
@@ -269,7 +293,7 @@ input[type="file"] { display: none; }
 </div>
 
 <div class="card">
-  <div class="card-label">Collectie / merk tag</div>
+  <div class="card-label">Collectie / merk tag <span style="color:var(--danger);font-size:11px">*</span></div>
   <div class="tag-grid" id="tag-grid"></div>
 </div>
 
@@ -298,9 +322,56 @@ input[type="file"] { display: none; }
   }
 })();
 
-  function fmt(cmd, val) {
-  document.execCommand(cmd, false, val || null);
+function fmt(cmd, val) {
   document.getElementById('description').focus();
+  document.execCommand(cmd, false, val || null);
+}
+function fmt2(id, cmd, val) {
+  const el = document.getElementById(id === 'ing' ? 'ingredients' : 'manufacturer');
+  el.focus();
+  document.execCommand(cmd, false, val || null);
+}
+
+function handlePaste(e, el) {
+  e.preventDefault();
+  const html = e.clipboardData.getData('text/html');
+  const text = e.clipboardData.getData('text/plain');
+  if (html) {
+    const clean = cleanHtml(html);
+    document.execCommand('insertHTML', false, clean);
+  } else {
+    const lines = text.split('\n');
+    const htmlLines = lines.map(l => {
+      const trimmed = l.trim();
+      if (!trimmed) return '';
+      trimmed = trimmed.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      return '<p>' + trimmed + '</p>';
+    }).filter(Boolean).join('');
+    document.execCommand('insertHTML', false, htmlLines || text);
+  }
+}
+
+function cleanHtml(html) {
+  const div = document.createElement('div');
+  div.innerHTML = html;
+  const allowed = ['B','STRONG','I','EM','U','H1','H2','H3','H4','P','BR','UL','OL','LI','SPAN'];
+  function clean(node) {
+    if (node.nodeType === 3) return;
+    if (node.nodeType === 1) {
+      if (!allowed.includes(node.tagName)) {
+        const parent = node.parentNode;
+        while (node.firstChild) parent.insertBefore(node.firstChild, node);
+        parent.removeChild(node);
+        return;
+      }
+      Array.from(node.attributes).forEach(attr => node.removeAttribute(attr.name));
+      Array.from(node.childNodes).forEach(clean);
+    }
+  }
+  Array.from(div.childNodes).forEach(clean);
+  return div.innerHTML
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>');
 }
 
 const TAGS = ['Lataffa','Prada','Montale','Armani','Hugo Boss','Viktor & Rolf','Xerjoff','Tom Ford','Gisada','Guerlain','INITIO','KAYALI','Maison Francis Kurkdijian','Marc Jacobs','Moschino','Nishane','Parfums de Marly','Zadig & Voltaire','Bvlgari','Carolina Herrera','Dolce & Gabbana','Hermes','Creed','Chloe','Azzaro','Yves Saint Laurent','Versace','Jean Paul Gaultier','Gucci','Lancome','Mugler','Rabanne','Narciso Rodriguez','Burberry','Valentino','Kenzo','Givenchy','Dames','Heren'];
@@ -362,14 +433,47 @@ function randomReviews() {
   document.getElementById('review-count').value = Math.floor(Math.random() * (850 - 120 + 1)) + 120;
 }
 
+function htmlToRichText(html) {
+  const div = document.createElement('div');
+  div.innerHTML = html;
+  const children = [];
+  function parseNode(node) {
+    if (node.nodeType === 3) {
+      const val = node.textContent;
+      if (val) return { type: 'text', value: val };
+      return null;
+    }
+    if (node.nodeType !== 1) return null;
+    const tag = node.tagName.toLowerCase();
+    const kids = Array.from(node.childNodes).map(parseNode).filter(Boolean);
+    if (tag === 'strong' || tag === 'b') return { type: 'text', value: node.textContent, bold: true };
+    if (tag === 'em' || tag === 'i') return { type: 'text', value: node.textContent, italic: true };
+    if (tag === 'p' || tag === 'div') return { type: 'paragraph', children: kids.length ? kids : [{ type: 'text', value: node.textContent }] };
+    if (tag === 'h2') return { type: 'heading', level: 2, children: kids.length ? kids : [{ type: 'text', value: node.textContent }] };
+    if (tag === 'h3') return { type: 'heading', level: 3, children: kids.length ? kids : [{ type: 'text', value: node.textContent }] };
+    if (tag === 'li') return { type: 'list-item', children: kids.length ? kids : [{ type: 'text', value: node.textContent }] };
+    if (tag === 'ul') return { type: 'list', listType: 'unordered', children: kids };
+    if (tag === 'ol') return { type: 'list', listType: 'ordered', children: kids };
+    if (kids.length) return { type: 'paragraph', children: kids };
+    return null;
+  }
+  Array.from(div.childNodes).forEach(n => {
+    const parsed = parseNode(n);
+    if (parsed) children.push(parsed);
+  });
+  if (!children.length) children.push({ type: 'paragraph', children: [{ type: 'text', value: div.textContent }] });
+  return JSON.stringify({ type: 'root', children });
+}
+
 async function rewriteDescription() {
- const desc = document.getElementById('description').innerText.trim();
+  const el = document.getElementById('description');
+  const desc = el.innerText.trim();
   const title = document.getElementById('title').value.trim();
   if (!desc) { showStatus('Vul eerst een beschrijving in', 'error'); return; }
   const btn = document.getElementById('rewrite-btn');
   btn.disabled = true;
   btn.innerHTML = '<i class="ti ti-loader"></i> Bezig...';
-  document.getElementById('description').classList.add('rewriting');
+  el.style.opacity = '0.5';
   try {
     const res = await fetch('/.netlify/functions/rewrite', {
       method: 'POST',
@@ -377,12 +481,18 @@ async function rewriteDescription() {
       body: JSON.stringify({ description: desc, title })
     });
     const data = await res.json();
-    if (data.result) { document.getElementById('description').innerHTML = data.result.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>'); showStatus('Beschrijving herschreven', 'success'); }
-    else showStatus('Fout: ' + (data.error || 'onbekend'), 'error');
+    if (data.result) {
+      const html = data.result
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .split('\n\n').map(p => '<p>' + p.replace(/\n/g, '<br>') + '</p>').join('');
+      el.innerHTML = html;
+      showStatus('Beschrijving herschreven', 'success');
+    } else showStatus('Fout: ' + (data.error || 'onbekend'), 'error');
   } catch(e) { showStatus('Fout: ' + e.message, 'error'); }
   btn.disabled = false;
   btn.innerHTML = '<i class="ti ti-wand"></i> Herschrijf professioneel';
-  document.getElementById('description').classList.remove('rewriting');
+  el.style.opacity = '1';
 }
 
 async function loadLogos() {
@@ -422,26 +532,49 @@ function filterLogos(q) {
   renderLogos(allLogos.filter(l => (l.filename || l.url || '').toLowerCase().includes(q.toLowerCase())));
 }
 
-function toRichText(text) {
-  return JSON.stringify({
-    type: 'root',
-    children: text.split('\n').filter(l => l.trim()).map(line => ({
-      type: 'paragraph',
-      children: [{ type: 'text', value: line }]
-    }))
-  });
+function validate() {
+  let ok = true;
+  function req(id, isEditor) {
+    const el = document.getElementById(id);
+    const empty = isEditor ? !el.innerText.trim() : !el.value.trim();
+    const wrap = isEditor ? el.closest('.editor-wrap') : el;
+    if (empty) { wrap.classList.add('error'); ok = false; }
+    else { wrap.classList.remove('error'); }
+  }
+  req('title');
+  req('description', true);
+  req('fragrance-type');
+  req('review-rating');
+  req('review-count');
+  req('ingredients', true);
+  req('manufacturer', true);
+  req('option-name');
+  req('price');
+  if (!document.getElementById('selected-logo-gid').value) {
+    document.getElementById('logo-grid').style.outline = '2px solid var(--danger)';
+    ok = false;
+  } else {
+    document.getElementById('logo-grid').style.outline = 'none';
+  }
+  if (selectedTags.length === 0) {
+    document.getElementById('tag-grid').style.outline = '2px solid var(--danger)';
+    document.getElementById('tag-grid').style.borderRadius = '8px';
+    ok = false;
+  } else {
+    document.getElementById('tag-grid').style.outline = 'none';
+  }
+  const emptyVariant = Array.from(document.querySelectorAll('.v-name')).find(i => !i.value.trim());
+  if (emptyVariant) { emptyVariant.classList.add('error'); emptyVariant.focus(); ok = false; }
+  const emptyPrice = Array.from(document.querySelectorAll('.v-price')).find(i => !i.value.trim());
+  if (emptyPrice) { emptyPrice.classList.add('error'); ok = false; }
+  return ok;
 }
 
 async function submitProduct() {
   if (!getToken()) { showStatus('Vul eerst je API token in', 'error'); return; }
-  const title = document.getElementById('title').value.trim();
-  if (!title) { showStatus('Vul een titel in', 'error'); return; }
-
-  const emptyVariant = Array.from(document.querySelectorAll('.v-name')).find(i => !i.value.trim());
-  if (emptyVariant) { showStatus('Vul een waarde in voor elke variant', 'error'); emptyVariant.focus(); return; }
+  if (!validate()) { showStatus('Vul alle verplichte velden in', 'error'); return; }
 
   const optionName = document.getElementById('option-name').value.trim() || 'Formaat';
-
   const btn = document.getElementById('submit-btn');
   btn.disabled = true;
   btn.innerHTML = '<i class="ti ti-loader"></i> Bezig...';
@@ -473,10 +606,10 @@ async function submitProduct() {
   if (rc) metafields.push({ namespace: 'custom', key: 'review_count', value: rc, type: 'number_integer' });
   const logoGid = document.getElementById('selected-logo-gid').value;
   if (logoGid) metafields.push({ namespace: 'custom', key: 'brand_logo', value: logoGid, type: 'file_reference' });
-  const ing = document.getElementById('ingredients').value.trim();
-  if (ing) metafields.push({ namespace: 'custom', key: 'ingredienten', value: toRichText(ing), type: 'rich_text_field' });
-  const mfr = document.getElementById('manufacturer').value.trim();
-  if (mfr) metafields.push({ namespace: 'custom', key: 'fabrikant', value: toRichText(mfr), type: 'rich_text_field' });
+  const ingHtml = document.getElementById('ingredients').innerHTML.trim();
+  if (ingHtml) metafields.push({ namespace: 'custom', key: 'ingredienten', value: htmlToRichText(ingHtml), type: 'rich_text_field' });
+  const mfrHtml = document.getElementById('manufacturer').innerHTML.trim();
+  if (mfrHtml) metafields.push({ namespace: 'custom', key: 'fabrikant', value: htmlToRichText(mfrHtml), type: 'rich_text_field' });
 
   const desc = document.getElementById('description').innerHTML.trim();
 
@@ -486,7 +619,7 @@ async function submitProduct() {
       headers: shopifyHeaders(),
       body: JSON.stringify({
         product: {
-          title,
+          title: document.getElementById('title').value.trim(),
           body_html: desc,
           tags: selectedTags.join(', '),
           options: [{ name: optionName }],
